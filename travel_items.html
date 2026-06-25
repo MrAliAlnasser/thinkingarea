@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>قائمة أغراض السفر</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:        #b8973a;
+      --gold-light:  #f0e4b8;
+      --gold-pale:   #faf6ea;
+      --green:       #2e6649;
+      --green-light: #e4f0eb;
+      --ink:         #1c1c1c;
+      --ink-soft:    #3a3a3a;
+      --muted:       #7a7a7a;
+      --border:      #e2d9c4;
+      --surface:     #ffffff;
+      --page-bg:     #f7f3eb;
+      --radius:      14px;
+      --radius-sm:   10px;
+      --shadow:      0 1px 6px rgba(0,0,0,0.08);
+    }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--page-bg);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.8;
+      letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ─── Page Wrapper ─── */
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 0 100px;
+    }
+
+    /* ─── Sticky Top Header ─── */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--gold-pale);
+      border-bottom: 1px solid var(--gold-light);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .top-bar .toc-btn {
+      background: var(--gold-light);
+      border: none;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      color: var(--gold);
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .top-bar-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink);
+      flex: 1;
+    }
+
+    .top-bar-icon { font-size: 1.1rem; }
+
+    /* ─── TOC Drawer ─── */
+    .toc-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.4);
+    }
+
+    .toc-overlay.open { display: block; }
+
+    .toc-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 82%;
+      max-width: 320px;
+      background: var(--surface);
+      z-index: 201;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+      border-radius: 0 0 0 var(--radius);
+    }
+
+    .toc-overlay.open .toc-drawer { transform: translateX(0); }
+
+    .toc-drawer-header {
+      padding: 20px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--gold-pale);
+    }
+
+    .toc-drawer-header h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .toc-close {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .toc-list {
+      list-style: none;
+      padding: 10px 0 20px;
+    }
+
+    .toc-list li a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid #f5efe3;
+      transition: background 0.15s;
+    }
+
+    .toc-list li a:active { background: var(--gold-pale); }
+    .toc-list li a .toc-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+    /* ─── Hero Header ─── */
+    .header {
+      text-align: center;
+      padding: 36px 20px 28px;
+      background: linear-gradient(180deg, var(--gold-pale) 0%, var(--page-bg) 100%);
+      border-bottom: 1px solid var(--gold-light);
+      margin-bottom: 16px;
+    }
+
+    .header-icon {
+      font-size: 52px;
+      margin-bottom: 10px;
+      display: block;
+      line-height: 1;
+    }
+
+    .header h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .header .subtitle {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 400;
+      line-height: 1.6;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    /* ─── Progress Bar ─── */
+    .progress-wrap {
+      padding: 12px 16px 4px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .progress-label strong { color: var(--green); font-weight: 700; }
+
+    .progress-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green) 0%, #4a9b72 100%);
+      border-radius: 10px;
+      width: 0%;
+      transition: width 0.35s ease;
+    }
+
+    /* ─── Section ─── */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin: 0 12px 14px;
+      overflow: hidden;
+      scroll-margin-top: 60px;
+    }
+
+    /* ─── Collapsible Section Header ─── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      background: var(--gold-pale);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+    }
+
+    .section-header:active { background: #f3ecda; }
+
+    .section-header .icon {
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .section-header h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      flex: 1;
+      line-height: 1.4;
+    }
+
+    .section-header .badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--green);
+      background: var(--green-light);
+      padding: 2px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .section-header .chevron {
+      font-size: 0.75rem;
+      color: var(--muted);
+      flex-shrink: 0;
+      transition: transform 0.22s ease;
+      margin-right: 2px;
+    }
+
+    .section.collapsed .chevron { transform: rotate(-90deg); }
+    .section.collapsed .section-body { display: none; }
+
+    /* ─── Items List ─── */
+    .items-list {
+      list-style: none;
+      padding: 4px 0;
+    }
+
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 13px 16px;
+      transition: background 0.12s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .item:not(:last-child) {
+      border-bottom: 1px solid #f2ece0;
+    }
+
+    .item input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--green);
+      cursor: pointer;
+      border-radius: 6px;
+    }
+
+    .item-label {
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      line-height: 1.65;
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .item.checked .item-label {
+      color: var(--muted);
+      text-decoration: line-through;
+      text-decoration-color: #c5bca8;
+    }
+
+    .item-label .note {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 3px;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    .item.checked .item-label .note { color: #b0a898; }
+
+    .item-label .tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      background: var(--gold-light);
+      color: var(--gold);
+      padding: 1px 7px;
+      border-radius: 10px;
+      margin-right: 4px;
+      font-weight: 500;
+    }
+
+    /* ─── Notes Card ─── */
+    .notes-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-right: 4px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin: 0 12px 14px;
+      scroll-margin-top: 60px;
+    }
+
+    .notes-section h3 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .notes-list { list-style: none; }
+
+    .notes-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 0;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      border-bottom: 1px dashed #ede7d5;
+      line-height: 1.6;
+    }
+
+    .notes-list li:last-child { border-bottom: none; }
+
+    .notes-list li::before {
+      content: '←';
+      color: var(--gold);
+      font-size: 0.8rem;
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    /* ─── Tips Card ─── */
+    .tips-card {
+      background: var(--green-light);
+      border: 1px solid #b8d9c8;
+      border-radius: var(--radius);
+      padding: 16px;
+      margin: 0 12px 14px;
+      scroll-margin-top: 60px;
+    }
+
+    .tips-card h3 {
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tips-list { list-style: none; }
+
+    .tips-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 7px 0;
+      font-size: 0.9rem;
+      color: #2a4a3a;
+      border-bottom: 1px solid #c8e0d4;
+      line-height: 1.6;
+    }
+
+    .tips-list li:last-child { border-bottom: none; }
+
+    .tips-list li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ─── Section Label (non-card blocks) ─── */
+    .block-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 10px 16px 4px;
+      margin: 0 12px;
+    }
+
+    /* ─── Footer ─── */
+    .footer {
+      text-align: center;
+      margin: 32px 12px 0;
+      padding: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* ─── Floating Action Buttons ─── */
+    .fab-group {
+      position: fixed;
+      bottom: 24px;
+      left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 150;
+    }
+
+    .fab {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+      transition: transform 0.15s, box-shadow 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .fab:active { transform: scale(0.93); box-shadow: 0 1px 6px rgba(0,0,0,0.15); }
+
+    .fab-print {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .fab-top {
+      background: var(--surface);
+      color: var(--ink-soft);
+      border: 1px solid var(--border);
+      font-size: 1rem;
+    }
+
+    /* ─── Print Styles ─── */
+    @media print {
+      @page { size: A4; margin: 18mm 15mm; }
+
+      .top-bar, .fab-group, .toc-overlay, .progress-wrap { display: none !important; }
+
+      body { background: #fff; font-size: 13px; }
+
+      .page { padding: 0; max-width: 100%; }
+
+      .section {
+        box-shadow: none;
+        border: 1px solid #ccc;
+        page-break-inside: avoid;
+        margin: 0 0 14px;
+      }
+
+      .section.collapsed .section-body { display: block !important; }
+
+      .section-header {
+        background: #f8f5ee !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        cursor: default;
+      }
+
+      .section-header .chevron { display: none; }
+
+      .tips-card {
+        background: #edf5f0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        margin: 0 0 14px;
+      }
+
+      .notes-section {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        margin: 0 0 14px;
+      }
+
+      h2, h3 { page-break-after: avoid; }
+
+      .header {
+        background: #faf6ea !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        margin-bottom: 14px;
+        padding: 20px;
+      }
+    }
+
+    /* ─── Desktop polish ─── */
+    @media (min-width: 540px) {
+      .page { padding-bottom: 80px; }
+      .section { margin: 0 16px 16px; }
+      .notes-section, .tips-card { margin: 0 16px 16px; }
+      .block-label { margin: 0 16px; }
+      .section-header { padding: 16px 20px; }
+      .section-header h2 { font-size: 1.05rem; }
+      .item { padding: 13px 20px; }
+      .notes-section, .tips-card { padding: 18px 20px; }
+      .header h1 { font-size: 1.9rem; }
+      .header { padding: 44px 24px 32px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- TOC Drawer Overlay -->
+<div class="toc-overlay" id="tocOverlay" onclick="closeToc(event)">
+  <nav class="toc-drawer" role="navigation" aria-label="قائمة المحتويات">
+    <div class="toc-drawer-header">
+      <h3>📋 المحتويات</h3>
+      <button class="toc-close" onclick="toggleToc()" aria-label="إغلاق">✕</button>
+    </div>
+    <ul class="toc-list">
+      <li><a href="#sec-bus" onclick="closeTocNav()"><span class="toc-icon">🎒</span> حقيبة الباص</a></li>
+      <li><a href="#sec-kids" onclick="closeTocNav()"><span class="toc-icon">👶</span> مع أطفال</a></li>
+      <li><a href="#sec-notes1" onclick="closeTocNav()"><span class="toc-icon">📝</span> ملاحظات قبل السفر</a></li>
+      <li><a href="#sec-bigbag" onclick="closeTocNav()"><span class="toc-icon">🧳</span> شنطة السفر الكبيرة</a></li>
+      <li><a href="#sec-food" onclick="closeTocNav()"><span class="toc-icon">☕</span> أدوات الطعام والشراب</a></li>
+      <li><a href="#sec-sleep" onclick="closeTocNav()"><span class="toc-icon">🛏️</span> النوم والعناية الشخصية</a></li>
+      <li><a href="#sec-tech" onclick="closeTocNav()"><span class="toc-icon">📡</span> الإنترنت والتقنية</a></li>
+      <li><a href="#sec-home" onclick="closeTocNav()"><span class="toc-icon">🏠</span> منزلك قبل السفر</a></li>
+      <li><a href="#sec-hotel" onclick="closeTocNav()"><span class="toc-icon">🕌</span> نصائح السكن</a></li>
+    </ul>
+  </nav>
+</div>
+
+<!-- Sticky Top Bar -->
+<div class="top-bar">
+  <button class="toc-btn" onclick="toggleToc()" aria-label="قائمة المحتويات">☰</button>
+  <span class="top-bar-title">أغراض السفر</span>
+  <span class="top-bar-icon">🧳</span>
+</div>
+
+<div class="page">
+
+  <!-- Hero Header -->
+  <header class="header">
+    <span class="header-icon">🧳</span>
+    <h1>قائمة أغراض السفر</h1>
+    <p class="subtitle">دليلك الشامل والمنظّم لتجهيز رحلة سفر خالية من النسيان</p>
+  </header>
+
+  <!-- Progress Bar -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>التقدّم</span>
+      <strong id="progressText">0 / 0 بند</strong>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+
+  <!-- ── Section: Bus Bag ── -->
+  <section class="section" id="sec-bus">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">🎒</span>
+      <h2>أشياء توضع في الحقيبة اليدوية داخل الباص</h2>
+      <span class="badge">حقيبة صغيرة</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="items-list">
+        <li class="item"><input type="checkbox" id="i01" /><label for="i01" class="item-label">📖 قرآن كريم <span class="note">حجم صغير أو متوسط مناسب للحمل</span></label></li>
+        <li class="item"><input type="checkbox" id="i02" /><label for="i02" class="item-label">📱 جوّال + شاحن متنقّل <span class="note">لكل شخص شاحن خاص به</span></label></li>
+        <li class="item"><input type="checkbox" id="i03" /><label for="i03" class="item-label">📌 إبرة فك شريحة الجوّال</label></li>
+        <li class="item"><input type="checkbox" id="i04" /><label for="i04" class="item-label">📡 جوّال أو راوتر لبث الإنترنت <span class="note">يجب أن يدعم جميع أجيال الاتصال</span></label></li>
+        <li class="item"><input type="checkbox" id="i05" /><label for="i05" class="item-label">🪮 مشط صغير</label></li>
+        <li class="item"><input type="checkbox" id="i06" /><label for="i06" class="item-label">🌿 مسواك</label></li>
+        <li class="item"><input type="checkbox" id="i07" /><label for="i07" class="item-label">🦷 أعواد تنظيف ما بين الأسنان <span class="note">خاصةً عند الحساسية للحوم والسكريات أو تسوّس الأسنان</span></label></li>
+        <li class="item"><input type="checkbox" id="i08" /><label for="i08" class="item-label">👓 علبة النظّارة مع قماشها</label></li>
+        <li class="item"><input type="checkbox" id="i09" /><label for="i09" class="item-label">🕶️ نظّارة شمسية مع علبتها</label></li>
+        <li class="item"><input type="checkbox" id="i10" /><label for="i10" class="item-label">🥪 أكل وماء وعصيرات للطريق</label></li>
+        <li class="item"><input type="checkbox" id="i11" /><label for="i11" class="item-label">📋 رقم الحملة <span class="note">في الجوّال وفي ورقة، ونسخة داخل الشنطة الكبيرة</span></label></li>
+        <li class="item"><input type="checkbox" id="i12" /><label for="i12" class="item-label">🎧 سماعة أذن صغيرة <span class="note">إن كانت بلوتوث تأكّد من شحنها مسبقاً</span></label></li>
+        <li class="item"><input type="checkbox" id="i13" /><label for="i13" class="item-label">🕌 تربة أو موضع سجود <span class="note">مصنوع من سعف النخل أو ورق خشن</span></label></li>
+        <li class="item"><input type="checkbox" id="i14" /><label for="i14" class="item-label">😴 وسادة رقبة قطنية <span class="note">للنوم المريح داخل الباص</span></label></li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ── Section: Children ── -->
+  <section class="section" id="sec-kids">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">👶</span>
+      <h2>عند السفر مع أطفال</h2>
+      <span class="badge">اختياري</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="items-list">
+        <li class="item"><input type="checkbox" id="ic1" /><label for="ic1" class="item-label">🧷 حفّاضات الطفل</label></li>
+        <li class="item"><input type="checkbox" id="ic2" /><label for="ic2" class="item-label">🍼 حليب صناعي</label></li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ── Notes: Before Travel ── -->
+  <div class="notes-section" id="sec-notes1">
+    <h3>📝 ملاحظات مهمة قبل السفر</h3>
+    <ul class="notes-list">
+      <li>حذف الصور والرسائل غير المناسبة من الجوّال</li>
+      <li>وضع رمز سري للجوّال</li>
+      <li>شحن الجوّال مسبق الدفع برصيد كافٍ</li>
+      <li>حلاقة الذقن والشعر قبل السفر، أو وضع موس الحلاقة في الحقيبة</li>
+      <li>🚿 هوز للحمام — بعض المحطات لا يتوفّر فيها هوز، أو شطّاف عند السفر للخارج</li>
+    </ul>
+  </div>
+
+
+  <!-- ── Section: Big Bag ── -->
+  <section class="section" id="sec-bigbag">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">🧳</span>
+      <h2>أشياء توضع داخل شنطة السفر الكبيرة</h2>
+      <span class="badge">4 دُرّجات</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="items-list">
+        <li class="item"><input type="checkbox" id="b01" /><label for="b01" class="item-label">💰 مبلغ مالي احتياطي نقدي داخل الشنطة <span class="note">+ بطاقة بنكية مشحونة + بطاقة ائتمانية لكريم</span></label></li>
+        <li class="item"><input type="checkbox" id="b02" /><label for="b02" class="item-label">🌸 عطر <span class="note">يُغلَّف بكيس شفاف جيداً داخل الحقيبة</span></label></li>
+        <li class="item"><input type="checkbox" id="b03" /><label for="b03" class="item-label">🏊 فوطة تنشيف للسباحة</label></li>
+        <li class="item"><input type="checkbox" id="b04" /><label for="b04" class="item-label">👘 ثوب <span class="note">يُكوى عند الوصول للمنطقة المقصودة</span></label></li>
+        <li class="item"><input type="checkbox" id="b05" /><label for="b05" class="item-label">🧣 شماغ وطاقية ونوعين من الكبكات</label></li>
+        <li class="item"><input type="checkbox" id="b06" /><label for="b06" class="item-label">📓 دفتر وأقلام</label></li>
+        <li class="item"><input type="checkbox" id="b07" /><label for="b07" class="item-label">🤲 جناع للصلاة <span class="tag">للنساء</span></label></li>
+        <li class="item"><input type="checkbox" id="b08" /><label for="b08" class="item-label">📿 قرآن + سجّادة + تربة + سبحة <span class="note">+ أدعية دخول وزيارة حرم النبي ﷺ مع زيارة البقيع</span></label></li>
+        <li class="item"><input type="checkbox" id="b09" /><label for="b09" class="item-label">✂️ مقراضة للأظافر <span class="note">أو تقليم الأظافر قبل السفر</span></label></li>
+        <li class="item"><input type="checkbox" id="b10" /><label for="b10" class="item-label">🛍️ أكياس شفافة للملابس المتّسخة</label></li>
+        <li class="item"><input type="checkbox" id="b11" /><label for="b11" class="item-label">🔌 توصيلة كهربائية + تحويلة لمقابس متعددة الأشكال</label></li>
+        <li class="item"><input type="checkbox" id="b12" /><label for="b12" class="item-label">🪥 فرشاة أسنان ومعجون</label></li>
+        <li class="item"><input type="checkbox" id="b13" /><label for="b13" class="item-label">🦷 أعواد تنظيف ما بين الأسنان</label></li>
+        <li class="item"><input type="checkbox" id="b14" /><label for="b14" class="item-label">👂 أعواد تنظيف الأذنين <span class="note">مفيدة بعد السباحة</span></label></li>
+        <li class="item"><input type="checkbox" id="b15" /><label for="b15" class="item-label">🩴 نعال لدورة المياه</label></li>
+        <li class="item"><input type="checkbox" id="b16" /><label for="b16" class="item-label">💊 أدوية للأمراض المزمنة + حبوب بنادول للصداع</label></li>
+        <li class="item"><input type="checkbox" id="b17" /><label for="b17" class="item-label">🧴 شامبو وصابون</label></li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ── Section: Food ── -->
+  <section class="section" id="sec-food">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">☕</span>
+      <h2>أدوات الطعام والشراب</h2>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="items-list">
+        <li class="item"><input type="checkbox" id="c01" /><label for="c01" class="item-label">🥄 معالق حديد + سكاكين حديد + معالق بلاستيك</label></li>
+        <li class="item"><input type="checkbox" id="c02" /><label for="c02" class="item-label">🍽️ صحون بلاستيك</label></li>
+        <li class="item"><input type="checkbox" id="c03" /><label for="c03" class="item-label">🥤 كاسات بلاستيك</label></li>
+        <li class="item"><input type="checkbox" id="c04" /><label for="c04" class="item-label">☕ كاسات ورق للشاي</label></li>
+        <li class="item"><input type="checkbox" id="c05" /><label for="c05" class="item-label">🍚 صحن للرز</label></li>
+        <li class="item"><input type="checkbox" id="c06" /><label for="c06" class="item-label">☕ قهوة سريعة التحضير "أبو ريال"</label></li>
+        <li class="item"><input type="checkbox" id="c07" /><label for="c07" class="item-label">🍬 سكّر</label></li>
+        <li class="item"><input type="checkbox" id="c08" /><label for="c08" class="item-label">🫖 دلة شاي</label></li>
+        <li class="item"><input type="checkbox" id="c09" /><label for="c09" class="item-label">🍵 شاي ليبتون قطّاط</label></li>
+        <li class="item"><input type="checkbox" id="c10" /><label for="c10" class="item-label">🔌 هيتر لتسخين الماء <span class="note">للشاي والقهوة</span></label></li>
+        <li class="item"><input type="checkbox" id="c11" /><label for="c11" class="item-label">🔓 فتّاحة للمعلبات <span class="note">مثل مفتاح فتح البيبسي</span></label></li>
+        <li class="item"><input type="checkbox" id="c12" /><label for="c12" class="item-label">🧀 أكل الفطور <span class="note">جبن كيري، جبن البقرات الثلاث، بتر، جبن شيدر</span></label></li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ── Section: Sleep & Personal ── -->
+  <section class="section" id="sec-sleep">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">🛏️</span>
+      <h2>النوم والعناية الشخصية</h2>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="items-list">
+        <li class="item"><input type="checkbox" id="d01" /><label for="d01" class="item-label">🛌 بطانية للنوم في الباص</label></li>
+        <li class="item"><input type="checkbox" id="d02" /><label for="d02" class="item-label">🧻 منديل</label></li>
+        <li class="item"><input type="checkbox" id="d03" /><label for="d03" class="item-label">💋 فازلين <span class="note">كمرطّب للشفاه</span></label></li>
+        <li class="item"><input type="checkbox" id="d04" /><label for="d04" class="item-label">🧼 صابون يد</label></li>
+        <li class="item"><input type="checkbox" id="d05" /><label for="d05" class="item-label">🧺 صابون غسيل ملابس تايد صغير</label></li>
+        <li class="item"><input type="checkbox" id="d06" /><label for="d06" class="item-label">🪢 حبل نشر الغسيل <span class="tag">رحلة طويلة</span></label></li>
+        <li class="item"><input type="checkbox" id="d07" /><label for="d07" class="item-label">🪒 موس حلاقة الذقن <span class="tag">أكثر من 5 أيام</span></label></li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ── Section: Tech ── -->
+  <section class="section" id="sec-tech">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">📡</span>
+      <h2>الإنترنت والتقنية</h2>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="items-list">
+        <li class="item">
+          <input type="checkbox" id="e01" />
+          <label for="e01" class="item-label">📶 راوتر إنترنت + كيبل LAN صغير
+            <span class="note">لتغيير إعدادات الراوتر من أي لابتوب — أو: ريست الراوتر واستخدم الرقم السري المكتوب على الجهاز</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+
+  <!-- ── Notes: Home ── -->
+  <div class="notes-section" id="sec-home" style="border-right-color: #c0392b;">
+    <h3 style="color: #c0392b;">🏠 ملاحظات قبل السفر — منزلك الحالي</h3>
+    <ul class="notes-list">
+      <li>إطفاء الدينمو (مضخّة الماء)</li>
+      <li>إغلاق الماء من الخارج</li>
+      <li>إعطاء مفتاح المنزل لأحد أفراد الأهل للاطمئنان على سلامته</li>
+      <li>إحكام إغلاق الغرف التي تحتوي على أشياء ثمينة</li>
+    </ul>
+  </div>
+
+
+  <!-- ── Tips: Hotel ── -->
+  <div class="tips-card" id="sec-hotel">
+    <h3>🕌 نصائح اختيار السكن في المدينة المنوّرة</h3>
+    <ul class="tips-list">
+      <li>يجب أن يحتوي الفندق على حمّام عربي</li>
+      <li>اختيار الفندق القريب جداً من الحرم في جهة البقيع</li>
+      <li>يجب أن يكون أسفل السكن محلّات أساسية وأسواق شعبية مباشرةً</li>
+    </ul>
+  </div>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>رحلة مباركة وأجر مقبول إن شاء الله 🤲</p>
+  </footer>
+
+</div>
+
+<!-- FABs -->
+<div class="fab-group">
+  <button class="fab fab-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="للأعلى">↑</button>
+  <button class="fab fab-print" onclick="window.print()" aria-label="طباعة">🖨️</button>
+</div>
+
+<script>
+  /* ── TOC ── */
+  function toggleToc() {
+    document.getElementById('tocOverlay').classList.toggle('open');
+  }
+  function closeToc(e) {
+    if (e.target === document.getElementById('tocOverlay')) toggleToc();
+  }
+  function closeTocNav() {
+    document.getElementById('tocOverlay').classList.remove('open');
+  }
+
+  /* ── Collapsible Sections ── */
+  function toggleSection(header) {
+    header.closest('.section').classList.toggle('collapsed');
+  }
+
+  /* ── Checkbox: strikethrough + progress ── */
+  const checkboxes = document.querySelectorAll('.item input[type="checkbox"]');
+
+  function updateProgress() {
+    const total = checkboxes.length;
+    const done  = [...checkboxes].filter(c => c.checked).length;
+    const pct   = total ? Math.round((done / total) * 100) : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = done + ' / ' + total + ' بند';
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', function () {
+      this.closest('.item').classList.toggle('checked', this.checked);
+      updateProgress();
+    });
+  });
+
+  updateProgress();
+</script>
+
+</body>
+</html>
