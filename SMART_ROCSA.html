@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#0f7a5e">
+<title>الجمعية التعاونية الذكية - المقترح المالي 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f7f4;
+  --surface: #ffffff;
+  --surface-alt: #f1f0ec;
+  --text-primary: #1a1a18;
+  --text-secondary: #4a4a46;
+  --text-muted: #8a8a84;
+  --border: #e4e2db;
+  --border-strong: #cccac2;
+  --accent-teal: #0f7a5e;
+  --accent-teal-light: #e0f4ee;
+  --accent-teal-mid: #1a9a78;
+  --accent-red: #c0392b;
+  --accent-red-light: #fdecea;
+  --accent-gold: #b07a1a;
+  --accent-gold-light: #fef8eb;
+  --font-size: 16px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.07);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.11);
+  --transition: 0.22s ease;
+}
+body.dark {
+  --bg: #141412;
+  --surface: #1e1d1b;
+  --surface-alt: #252420;
+  --text-primary: #f0ede6;
+  --text-secondary: #b0ada6;
+  --text-muted: #6a6a64;
+  --border: #2e2d28;
+  --border-strong: #3e3d38;
+  --accent-teal-light: #0a2e24;
+  --accent-red-light: #2e1010;
+  --accent-gold-light: #2a2008;
+}
+body.sepia {
+  --bg: #f5f0e8;
+  --surface: #faf6ee;
+  --surface-alt: #ede8de;
+  --text-primary: #2c1e0f;
+  --text-secondary: #5c4a30;
+  --text-muted: #9a8060;
+  --border: #d8cebb;
+  --border-strong: #b8a890;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-size: var(--font-size);
+  line-height: 1.85;
+  transition: background var(--transition), color var(--transition);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  overflow-x: hidden;
+}
+
+/* ── Progress bar ── */
+#progress-bar {
+  position: fixed; top: 0; right: 0; left: 0;
+  height: 3px; background: var(--border); z-index: 1000;
+}
+#progress-fill {
+  height: 100%; width: 0%;
+  background: var(--accent-teal);
+  transition: width 0.1s linear;
+}
+
+/* ── Mobile nav bar ── */
+#mobile-nav {
+  position: fixed; bottom: 0; right: 0; left: 0;
+  height: 60px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-around;
+  z-index: 999;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+}
+.nav-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  background: none; border: none; cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+  color: var(--text-muted);
+  font-size: 10px; font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+  min-width: 56px;
+}
+.nav-btn .nav-icon { font-size: 20px; line-height: 1; }
+.nav-btn.active, .nav-btn:active { color: var(--accent-teal); }
+
+/* ── Drawer overlay ── */
+#drawer-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45); z-index: 1100;
+  backdrop-filter: blur(2px);
+}
+#drawer-overlay.open { display: block; }
+
+/* ── TOC drawer ── */
+#toc-drawer {
+  position: fixed; bottom: 0; right: 0; left: 0;
+  background: var(--surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 0 1.25rem 2rem;
+  z-index: 1200;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(.32,1,.36,1);
+  max-height: 70vh; overflow-y: auto;
+}
+#toc-drawer.open { transform: translateY(0); }
+.drawer-handle {
+  width: 40px; height: 4px;
+  background: var(--border-strong);
+  border-radius: 2px;
+  margin: 12px auto 18px;
+}
+.drawer-title {
+  font-size: 13px; font-weight: 800;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 1rem;
+}
+.toc-list { list-style: none; }
+.toc-list li { margin-bottom: 4px; }
+.toc-list a {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+  font-size: 15px; font-weight: 500;
+  color: var(--text-secondary);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border-right: 3px solid transparent;
+  transition: all var(--transition);
+}
+.toc-list a .toc-emoji { font-size: 1.1rem; width: 26px; text-align: center; }
+.toc-list a.active {
+  color: var(--accent-teal);
+  border-right-color: var(--accent-teal);
+  background: var(--accent-teal-light);
+  font-weight: 700;
+}
+
+/* ── Settings drawer ── */
+#settings-drawer {
+  position: fixed; bottom: 0; right: 0; left: 0;
+  background: var(--surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 0 1.25rem 2rem;
+  z-index: 1200;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(.32,1,.36,1);
+}
+#settings-drawer.open { transform: translateY(0); }
+.settings-section { margin-bottom: 1.25rem; }
+.settings-label {
+  font-size: 12px; font-weight: 700;
+  color: var(--text-muted); margin-bottom: 8px;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+.theme-btns { display: flex; gap: 8px; }
+.theme-btn {
+  flex: 1; font-size: 13px; font-weight: 600;
+  padding: 10px 6px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-alt);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: 'Tajawal', sans-serif;
+  transition: all var(--transition);
+  text-align: center;
+}
+.theme-btn.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); }
+.range-row { display: flex; align-items: center; gap: 10px; }
+.range-row input[type=range] { flex: 1; height: 4px; accent-color: var(--accent-teal); }
+.range-val {
+  font-size: 13px; font-weight: 700;
+  color: var(--accent-teal); min-width: 36px; text-align: center;
+}
+.reset-btn {
+  width: 100%; font-size: 14px; padding: 12px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: transparent; color: var(--text-muted);
+  cursor: pointer; font-family: 'Tajawal', sans-serif;
+  font-weight: 600; transition: all var(--transition);
+  margin-top: 4px;
+}
+
+/* ── Page wrapper ── */
+.page {
+  padding: 16px 16px 80px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* ── Hero ── */
+.hero {
+  padding: 1.75rem 0 1.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+.badge-top {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--accent-teal-light); color: var(--accent-teal);
+  font-size: 11px; font-weight: 800;
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 0.9rem;
+  border: 1px solid color-mix(in srgb, var(--accent-teal) 20%, transparent);
+  letter-spacing: 0.03em;
+}
+.hero h1 {
+  font-size: 2rem; font-weight: 800;
+  line-height: 1.22; color: var(--text-primary);
+  margin-bottom: 0.65rem; letter-spacing: -0.02em;
+}
+.hero-sub {
+  font-size: 1rem; color: var(--text-secondary);
+  line-height: 1.65; margin-bottom: 1.1rem;
+}
+.meta-row {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.meta-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px; color: var(--text-muted); font-weight: 500;
+}
+
+/* ── Sections ── */
+section {
+  margin-bottom: 2.5rem;
+  scroll-margin-top: 20px;
+}
+section h2 {
+  font-size: 1.2rem; font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.section-icon {
+  width: 30px; height: 30px;
+  background: var(--accent-teal-light);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.95rem; flex-shrink: 0;
+}
+
+/* ── Feature cards — single column on mobile ── */
+.features-grid {
+  display: flex; flex-direction: column; gap: 12px;
+  margin-top: 1rem;
+}
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem 1rem 1rem;
+  position: relative;
+  display: flex; align-items: flex-start; gap: 12px;
+  transition: box-shadow var(--transition);
+  break-inside: avoid;
+}
+.feature-card::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 3px; height: 100%;
+  background: var(--accent-teal);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.feature-card.highlight { border-color: var(--text-primary); }
+.feature-card.highlight::before { background: var(--text-primary); }
+.feat-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  background: var(--surface-alt);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+}
+.feature-card.highlight .feat-icon { background: var(--text-primary); }
+.feat-body { flex: 1; min-width: 0; }
+.feature-card h3 {
+  font-size: 0.97rem; font-weight: 700;
+  margin-bottom: 4px; color: var(--text-primary);
+  line-height: 1.3;
+}
+.feature-card p {
+  font-size: 0.88rem; color: var(--text-secondary);
+  line-height: 1.6; margin: 0;
+}
+
+/* ── Tooltip — tap to reveal on mobile ── */
+.term {
+  border-bottom: 1.5px dashed var(--accent-teal);
+  color: var(--accent-teal); cursor: pointer;
+  position: relative; display: inline;
+}
+.tooltip-box {
+  display: none; position: static;
+  background: var(--text-primary); color: var(--surface);
+  font-size: 12px; line-height: 1.55;
+  padding: 8px 12px; border-radius: var(--radius-sm);
+  margin-top: 6px; width: 100%; text-align: right;
+}
+.term.tapped .tooltip-box { display: block; }
+
+/* ── Duo layout — stacked on mobile ── */
+.duo-grid {
+  display: flex; flex-direction: column; gap: 12px;
+  margin: 1rem 0;
+}
+.duo-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.1rem;
+  break-inside: avoid;
+}
+.duo-card.early { border-top: 3px solid var(--accent-red); }
+.duo-card.late  { border-top: 3px solid var(--accent-teal); }
+.duo-card h3 {
+  font-size: 0.95rem; font-weight: 700;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.duo-badge {
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px;
+}
+.duo-badge.red  { background: var(--accent-red-light); color: var(--accent-red); }
+.duo-badge.teal { background: var(--accent-teal-light); color: var(--accent-teal); }
+.duo-card ul { list-style: none; }
+.duo-card ul li {
+  font-size: 0.88rem; color: var(--text-secondary);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.duo-card ul li:last-child { border-bottom: none; }
+.verdict-box {
+  background: var(--accent-gold-light);
+  border: 1px solid color-mix(in srgb, var(--accent-gold) 25%, transparent);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.1rem;
+  font-size: 0.88rem; color: var(--text-secondary);
+  line-height: 1.65;
+}
+.verdict-box strong { color: var(--accent-gold); }
+
+/* ── Score cards — 2 col grid ── */
+.score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px; margin: 1rem 0;
+}
+.score-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1rem;
+  break-inside: avoid;
+}
+.score-label {
+  font-size: 11px; color: var(--text-muted);
+  margin-bottom: 4px; font-weight: 600;
+  line-height: 1.3;
+}
+.score-value {
+  font-size: 1.5rem; font-weight: 800;
+  line-height: 1; margin-bottom: 7px;
+}
+.score-bar-bg {
+  height: 5px; background: var(--surface-alt);
+  border-radius: 3px; overflow: hidden;
+}
+.score-bar-fill {
+  height: 100%; border-radius: 3px;
+  transition: width 1s cubic-bezier(.22,1,.36,1);
+}
+.score-sub {
+  font-size: 11px; color: var(--text-muted); margin-top: 5px;
+}
+
+/* ── Callout ── */
+.callout {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: var(--surface-alt);
+  border-right: 3px solid var(--accent-teal);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 0.9rem 1rem;
+  margin: 1rem 0;
+  font-size: 0.88rem; color: var(--text-secondary);
+  line-height: 1.65; break-inside: avoid;
+}
+.callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
+
+/* ── Table — card-row layout for mobile ── */
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden; break-inside: avoid;
+  margin: 1rem 0;
+}
+.table-head-bar {
+  background: var(--text-primary); color: var(--surface);
+  padding: 0.9rem 1.1rem;
+}
+.table-head-bar h3 { font-size: 1rem; margin: 0 0 2px; }
+.table-head-bar span { font-size: 0.78rem; opacity: 0.72; }
+
+/* Mobile card rows instead of table */
+.pay-row {
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px 14px;
+  align-items: center;
+}
+.pay-row:last-child { border-bottom: none; }
+.pay-row:active { background: var(--surface-alt); }
+.pay-role-badge {
+  font-size: 10px; font-weight: 800;
+  padding: 4px 10px; border-radius: 20px; white-space: nowrap;
+}
+.pay-info { min-width: 0; }
+.pay-date { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.pay-gauge { display: flex; align-items: center; gap: 8px; }
+.pay-gauge-bg {
+  flex: 1; height: 5px;
+  background: var(--surface-alt); border-radius: 3px; overflow: hidden;
+}
+.pay-gauge-fill { height: 100%; border-radius: 3px; }
+.pay-type { font-size: 11px; font-weight: 700; }
+.pay-right { text-align: left; }
+.pay-pct { font-size: 11px; font-weight: 800; margin-bottom: 3px; }
+.pay-net { font-size: 1.05rem; font-weight: 800; }
+
+/* ── CTA ── */
+.cta-box {
+  background: linear-gradient(135deg, #0f2a22 0%, #0a1e18 100%);
+  color: #d0f0e5;
+  border-radius: var(--radius-lg); padding: 1.75rem 1.25rem;
+  text-align: center; break-inside: avoid;
+}
+.cta-box h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem; color: #fff; }
+.cta-box p { font-size: 0.92rem; opacity: 0.85; line-height: 1.65; }
+.priority-note {
+  display: inline-block; margin-top: 1rem;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 20px; padding: 5px 18px;
+  font-size: 12px; font-weight: 700;
+}
+
+/* ── Print ── */
+@media print {
+  @page { size: A4; margin: 15mm; }
+  #progress-bar, #mobile-nav, #drawer-overlay,
+  #toc-drawer, #settings-drawer { display: none !important; }
+  body { background: #fff !important; color: #000 !important; font-size: 13px !important; }
+  .page { padding: 0 !important; max-width: none; }
+  .feature-card, .duo-card, .score-card, .table-wrap, .cta-box, .callout { break-inside: avoid; }
+  .hero h1 { font-size: 1.6rem !important; }
+  .cta-box, .table-head-bar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  /* restore table for print */
+  .pay-row { border-bottom: 1px solid #ddd; }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill"></div></div>
+
+<!-- Drawer overlay -->
+<div id="drawer-overlay" onclick="closeAll()"></div>
+
+<!-- TOC Drawer -->
+<div id="toc-drawer" role="dialog" aria-modal="true" aria-label="فهرس المحتويات">
+  <div class="drawer-handle"></div>
+  <div class="drawer-title">فهرس المحتويات</div>
+  <ul class="toc-list" id="toc">
+    <li><a href="#overview"  onclick="closeAll()"><span class="toc-emoji">✦</span>نظرة عامة</a></li>
+    <li><a href="#features"  onclick="closeAll()"><span class="toc-emoji">⚡</span>مزايا النظام</a></li>
+    <li><a href="#comparison" onclick="closeAll()"><span class="toc-emoji">↔️</span>المقارنة الزمنية</a></li>
+    <li><a href="#stats"     onclick="closeAll()"><span class="toc-emoji">📊</span>الأرقام الرئيسية</a></li>
+    <li><a href="#table"     onclick="closeAll()"><span class="toc-emoji">📋</span>جدول العوائد</a></li>
+    <li><a href="#join"      onclick="closeAll()"><span class="toc-emoji">🤝</span>الانضمام</a></li>
+  </ul>
+</div>
+
+<!-- Settings Drawer -->
+<div id="settings-drawer" role="dialog" aria-modal="true" aria-label="خيارات القراءة">
+  <div class="drawer-handle"></div>
+  <div class="drawer-title" style="font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.1rem;">خيارات القراءة</div>
+  <div class="settings-section">
+    <div class="settings-label">السمة</div>
+    <div class="theme-btns">
+      <button class="theme-btn active" data-theme="light">☀️ فاتح</button>
+      <button class="theme-btn" data-theme="dark">🌙 داكن</button>
+      <button class="theme-btn" data-theme="sepia">📜 بُني</button>
+    </div>
+  </div>
+  <div class="settings-section">
+    <div class="settings-label">حجم الخط</div>
+    <div class="range-row">
+      <span style="font-size:12px;color:var(--text-muted);">أ</span>
+      <input type="range" id="font-range" min="14" max="21" value="16" step="1">
+      <span style="font-size:18px;color:var(--text-muted);">أ</span>
+      <span class="range-val" id="font-val">16</span>
+    </div>
+  </div>
+  <button class="reset-btn" id="reset-btn">↺ إعادة الضبط</button>
+</div>
+
+<!-- ── Page content ── -->
+<div class="page">
+
+  <!-- Hero -->
+  <div class="hero" id="overview">
+    <div class="badge-top">✦ النسخة النهائية 2026</div>
+    <h1>الجمعية التعاونية الذكية</h1>
+    <p class="hero-sub">نظام مالي مبتكر يدمج مرونة التمويل بعوائد الاستثمار — لأربعة شركاء فقط.</p>
+    <div class="meta-row">
+      <span class="meta-chip">⏱️ وقت القراءة: <strong id="read-time">—</strong></span>
+      <span class="meta-chip">📅 يناير 2026</span>
+      <span class="meta-chip">💰 2,500 ريال/شهر</span>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section id="features">
+    <h2><span class="section-icon">⚡</span>مزايا النظام الأربع</h2>
+    <p style="color:var(--text-secondary);margin-bottom:1rem;font-size:0.92rem;">يقوم النظام على أربعة ركائز متكاملة تضمن لكل شريك تجربة مالية عادلة وقابلة للتخصيص وفق احتياجاته الزمنية.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feat-icon">⚡</div>
+        <div class="feat-body">
+          <h3>سيولة مجمعة (30,000 ريال)</h3>
+          <p>نظام التوزيع الربع سنوي يضمن لك استلام مبلغ "مؤثر" يمكنك من سداد التزام كبير أو بدء مشروع.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon">⚖️</div>
+        <div class="feat-body">
+          <h3>عدالة <span class="term" onclick="this.classList.toggle('tapped')">القيمة الزمنية<span class="tooltip-box">مبدأ مالي يقول إن الريال اليوم أكثر قيمةً من الريال غداً، بسبب فرص الاستثمار المتاحة.</span></span></h3>
+          <p>تطبيق مبدأ مالي عادل: المتقدم في الاستلام يدفع رسوماً رمزية، والمتأخر يقبض زيادة مجزية.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feat-icon">📝</div>
+        <div class="feat-body">
+          <h3>توثيق قانوني محكم</h3>
+          <p>الجمعية مدعومة بعقود وسندات لأمر عبر منصة <span class="term" onclick="this.classList.toggle('tapped')">نافذ<span class="tooltip-box">منصة إلكترونية حكومية سعودية لتوثيق العقود والسندات الرسمية برقابة وزارة العدل.</span></span> لضمان الحقوق بقوة النظام.</p>
+        </div>
+      </div>
+      <div class="feature-card highlight">
+        <div class="feat-icon">🎯</div>
+        <div class="feat-body">
+          <h3>الهدف: دائرة مغلقة (4 شركاء)</h3>
+          <p>العدد محدود جداً (4 أفراد فقط) لضمان سرعة اكتمال الدورة المالية وجودة الالتزام.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section id="comparison">
+    <h2><span class="section-icon">↔️</span>المقارنة الزمنية: المتقدم مقابل المتأخر</h2>
+    <p style="color:var(--text-secondary);margin-bottom:1rem;font-size:0.92rem;">يُجسّد النظام مبدأ القيمة الزمنية للنقود عبر تفاوت يسير في صافي المبالغ المستلمة.</p>
+    <div class="duo-grid">
+      <div class="duo-card early">
+        <h3>الدور الأول (مارس) <span class="duo-badge red">تمويل فوري</span></h3>
+        <ul>
+          <li><span>موعد الاستلام</span><span>الربع الأول</span></li>
+          <li><span>النسبة</span><span style="color:var(--accent-red);font-weight:800;">4.00%−</span></li>
+          <li><span>الصافي المستلم</span><span style="font-weight:800;">28,800 ر</span></li>
+          <li><span>الاستفادة</span><span>سيولة فورية</span></li>
+        </ul>
+      </div>
+      <div class="duo-card late">
+        <h3>الدور الرابع (ديسمبر) <span class="duo-badge teal">استثمار سنوي</span></h3>
+        <ul>
+          <li><span>موعد الاستلام</span><span>الربع الرابع</span></li>
+          <li><span>النسبة</span><span style="color:var(--accent-teal);font-weight:800;">4.00%+</span></li>
+          <li><span>الصافي المستلم</span><span style="font-weight:800;">31,200 ر</span></li>
+          <li><span>الاستفادة</span><span>عائد إضافي</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="verdict-box">
+      <strong>الأثر العملي:</strong> الفارق بين الدور الأول والأخير هو <strong>2,400 ريال</strong> فقط — أي ما يعادل قسطاً واحداً تقريباً. هذا يعني أن النظام عادل جداً: من يختار التقدم يحصل على السيولة الفورية، ومن يصبر يحصل على عائد إضافي مجزٍ دون مخاطرة.
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section id="stats">
+    <h2><span class="section-icon">📊</span>الأرقام الرئيسية</h2>
+    <div class="score-grid">
+      <div class="score-card">
+        <div class="score-label">إجمالي السهم الواحد</div>
+        <div class="score-value" style="color:var(--accent-teal);">30,000</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:var(--accent-teal);"></div></div>
+        <div class="score-sub">ريال سعودي</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">القسط الشهري</div>
+        <div class="score-value" style="color:var(--accent-gold);">2,500</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:33%;background:var(--accent-gold);"></div></div>
+        <div class="score-sub">ريال × 12 شهراً</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">أقل صافٍ (الدور 1)</div>
+        <div class="score-value" style="color:var(--accent-red);">28,800</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:96%;background:var(--accent-red);"></div></div>
+        <div class="score-sub">خصم 4% تمويل فوري</div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">أعلى صافٍ (الدور 4)</div>
+        <div class="score-value" style="color:var(--accent-teal);">31,200</div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%;background:var(--accent-teal);"></div></div>
+        <div class="score-sub">زيادة 4% انتظار سنوي</div>
+      </div>
+    </div>
+    <div class="callout">
+      <div class="callout-icon">💡</div>
+      <div>يتم تسوية الفروقات داخلياً عبر <strong>أمين الصندوق</strong> لضمان تصفير الحساب بنهاية السنة. لا يتحمل أي شريك عبئاً إضافياً خارج إطار القسط الشهري المتفق عليه.</div>
+    </div>
+  </section>
+
+  <!-- Table -->
+  <section id="table">
+    <h2><span class="section-icon">📋</span>جدول العوائد والتدفقات</h2>
+    <div class="table-wrap">
+      <div class="table-head-bar">
+        <h3>العوائد الربع سنوية</h3>
+        <span>القسط الشهري: 2,500 ر &nbsp;|&nbsp; إجمالي السهم: 30,000 ر</span>
+      </div>
+
+      <!-- Row 1 -->
+      <div class="pay-row">
+        <span class="pay-role-badge" style="background:var(--accent-red-light);color:var(--accent-red);">الأول</span>
+        <div class="pay-info">
+          <div class="pay-date">مارس — الربع الأول</div>
+          <div class="pay-gauge">
+            <div class="pay-gauge-bg"><div class="pay-gauge-fill" style="width:100%;background:var(--accent-red);"></div></div>
+            <span class="pay-type" style="color:var(--accent-red);">تمويل فوري</span>
+          </div>
+        </div>
+        <div class="pay-right">
+          <div class="pay-pct" style="color:var(--accent-red);">4.00%−</div>
+          <div class="pay-net">28,800</div>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="pay-row">
+        <span class="pay-role-badge" style="background:#fff0f0;color:#c05050;">الثاني</span>
+        <div class="pay-info">
+          <div class="pay-date">يونيو — الربع الثاني</div>
+          <div class="pay-gauge">
+            <div class="pay-gauge-bg"><div class="pay-gauge-fill" style="width:35%;background:#f09595;"></div></div>
+            <span class="pay-type" style="color:#b04040;">تمويل قصير</span>
+          </div>
+        </div>
+        <div class="pay-right">
+          <div class="pay-pct" style="color:#c05050;">1.35%−</div>
+          <div class="pay-net">29,595</div>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="pay-row">
+        <span class="pay-role-badge" style="background:var(--accent-teal-light);color:var(--accent-teal);">الثالث</span>
+        <div class="pay-info">
+          <div class="pay-date">سبتمبر — الربع الثالث</div>
+          <div class="pay-gauge">
+            <div class="pay-gauge-bg"><div class="pay-gauge-fill" style="width:35%;background:#5dcaa5;"></div></div>
+            <span class="pay-type" style="color:var(--accent-teal);">ادخار قصير</span>
+          </div>
+        </div>
+        <div class="pay-right">
+          <div class="pay-pct" style="color:var(--accent-teal);">1.35%+</div>
+          <div class="pay-net">30,405</div>
+        </div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="pay-row">
+        <span class="pay-role-badge" style="background:var(--accent-teal-light);color:var(--accent-teal-mid);">الرابع</span>
+        <div class="pay-info">
+          <div class="pay-date">ديسمبر — الربع الرابع</div>
+          <div class="pay-gauge">
+            <div class="pay-gauge-bg"><div class="pay-gauge-fill" style="width:100%;background:var(--accent-teal);"></div></div>
+            <span class="pay-type" style="color:var(--accent-teal);">استثمار سنوي</span>
+          </div>
+        </div>
+        <div class="pay-right">
+          <div class="pay-pct" style="color:var(--accent-teal-mid);">4.00%+</div>
+          <div class="pay-net">31,200</div>
+        </div>
+      </div>
+
+      <div style="padding:10px 1.1rem;font-size:11px;color:var(--text-muted);background:var(--surface-alt);border-top:1px solid var(--border);">
+        * يتم تسوية الفروقات داخلياً عبر أمين الصندوق لضمان تصفير الحساب بنهاية السنة.
+      </div>
+    </div>
+  </section>
+
+  <!-- Join -->
+  <section id="join">
+    <h2><span class="section-icon">🤝</span>جاهز للانضمام؟</h2>
+    <div class="callout">
+      <div class="callout-icon">📌</div>
+      <div>الأدوار المتاحة محدودة بـ 4 شركاء فقط. الأولوية لمن يحجز الدور أولاً وفق خطته المالية.</div>
+    </div>
+    <div class="cta-box">
+      <h3>جاهز للانضمام؟</h3>
+      <p>يرجى تحديد الدور المناسب لخطتك المالية ليتم تجهيز عقد الاتفاق.<br>الأولوية لمن يحجز الدور أولاً.</p>
+      <div class="priority-note">🔒 الأماكن المتبقية: 4 من 4</div>
+    </div>
+  </section>
+
+</div><!-- /.page -->
+
+<!-- ── Mobile bottom nav ── -->
+<nav id="mobile-nav" aria-label="التنقل الرئيسي">
+  <button class="nav-btn" onclick="toggleTOC()" id="nav-toc" aria-label="فهرس المحتويات">
+    <span class="nav-icon">☰</span>
+    <span>المحتويات</span>
+  </button>
+  <button class="nav-btn" onclick="scrollTop()" aria-label="العودة للأعلى">
+    <span class="nav-icon">⬆️</span>
+    <span>الأعلى</span>
+  </button>
+  <button class="nav-btn" onclick="window.print()" aria-label="طباعة">
+    <span class="nav-icon">🖨️</span>
+    <span>طباعة</span>
+  </button>
+  <button class="nav-btn" onclick="toggleSettings()" id="nav-settings" aria-label="الإعدادات">
+    <span class="nav-icon">🎨</span>
+    <span>المظهر</span>
+  </button>
+</nav>
+
+<script>
+(function(){
+  // Reading time
+  var words = document.querySelector('.page').innerText.trim().split(/\s+/).length;
+  document.getElementById('read-time').textContent = Math.max(1, Math.ceil(words/180)) + ' دقائق';
+
+  // Progress
+  var fill = document.getElementById('progress-fill');
+  window.addEventListener('scroll', function(){
+    var total = document.body.scrollHeight - window.innerHeight;
+    if(total > 0) fill.style.width = Math.min(100,(window.scrollY/total)*100) + '%';
+  }, {passive:true});
+
+  // Scrollspy
+  var secs = document.querySelectorAll('section[id], .hero[id]');
+  var links = document.querySelectorAll('#toc a');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){l.classList.remove('active');});
+        var a = document.querySelector('#toc a[href="#'+e.target.id+'"]');
+        if(a) a.classList.add('active');
+      }
+    });
+  },{rootMargin:'-15% 0px -60% 0px'});
+  secs.forEach(function(s){io.observe(s);});
+
+  // Drawers
+  window.closeAll = function(){
+    document.getElementById('toc-drawer').classList.remove('open');
+    document.getElementById('settings-drawer').classList.remove('open');
+    document.getElementById('drawer-overlay').classList.remove('open');
+    document.getElementById('nav-toc').classList.remove('active');
+    document.getElementById('nav-settings').classList.remove('active');
+  };
+  window.toggleTOC = function(){
+    var open = document.getElementById('toc-drawer').classList.contains('open');
+    closeAll();
+    if(!open){
+      document.getElementById('toc-drawer').classList.add('open');
+      document.getElementById('drawer-overlay').classList.add('open');
+      document.getElementById('nav-toc').classList.add('active');
+    }
+  };
+  window.toggleSettings = function(){
+    var open = document.getElementById('settings-drawer').classList.contains('open');
+    closeAll();
+    if(!open){
+      document.getElementById('settings-drawer').classList.add('open');
+      document.getElementById('drawer-overlay').classList.add('open');
+      document.getElementById('nav-settings').classList.add('active');
+    }
+  };
+  window.scrollTop = function(){ window.scrollTo({top:0, behavior:'smooth'}); };
+
+  // Themes
+  var themeBtns = document.querySelectorAll('.theme-btn');
+  themeBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      themeBtns.forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      document.body.classList.remove('dark','sepia');
+      if(btn.dataset.theme !== 'light') document.body.classList.add(btn.dataset.theme);
+      localStorage.setItem('rocsa-theme', btn.dataset.theme);
+    });
+  });
+
+  // Font size
+  var fr = document.getElementById('font-range');
+  var fv = document.getElementById('font-val');
+  fr.addEventListener('input', function(){
+    document.documentElement.style.setProperty('--font-size', fr.value+'px');
+    fv.textContent = fr.value;
+    localStorage.setItem('rocsa-font', fr.value);
+  });
+
+  // Reset
+  document.getElementById('reset-btn').addEventListener('click', function(){
+    document.body.classList.remove('dark','sepia');
+    document.documentElement.style.setProperty('--font-size','16px');
+    fr.value = 16; fv.textContent = 16;
+    themeBtns.forEach(function(b){b.classList.remove('active');});
+    document.querySelector('[data-theme="light"]').classList.add('active');
+    ['rocsa-theme','rocsa-font'].forEach(function(k){localStorage.removeItem(k);});
+  });
+
+  // Restore prefs
+  var st = localStorage.getItem('rocsa-theme');
+  if(st && st !== 'light'){
+    document.body.classList.add(st);
+    themeBtns.forEach(function(b){b.classList.remove('active');});
+    var t = document.querySelector('[data-theme="'+st+'"]');
+    if(t) t.classList.add('active');
+  }
+  var sf = localStorage.getItem('rocsa-font');
+  if(sf){ document.documentElement.style.setProperty('--font-size',sf+'px'); fr.value=sf; fv.textContent=sf; }
+
+  // Animate score bars
+  window.addEventListener('load', function(){
+    document.querySelectorAll('.score-bar-fill').forEach(function(el){
+      var w = el.style.width; el.style.width='0%';
+      setTimeout(function(){ el.style.width=w; }, 400);
+    });
+  });
+})();
+</script>
+</body>
+</html>
