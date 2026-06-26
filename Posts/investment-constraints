@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="دليل القيود غير المحاسبية المؤثرة على قرارات الاستثمار: التمويل، المخاطر، والسيولة.">
+    <title>قيود قرارات الاستثمار | منظور استراتيجي</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+    <style>
+        /* =========================================================
+           DESIGN TOKENS
+        ========================================================= */
+        :root {
+            --primary:       #1565C0;
+            --primary-light: #1976D2;
+            --primary-pale:  #E3F2FD;
+            --accent:        #F50057;
+            --accent-warm:   #FF6F00;
+            --surface:       #FFFFFF;
+            --bg:            #F0F4F8;
+            --text-main:     #1A1A2E;
+            --text-sub:      #546E7A;
+            --text-muted:    #90A4AE;
+            --radius-card:   16px;
+            --radius-pill:   999px;
+            --shadow-card:   0 2px 8px rgba(21,101,192,.08), 0 1px 3px rgba(0,0,0,.06);
+            --shadow-hover:  0 16px 40px rgba(21,101,192,.18);
+            --transition:    all 0.28s cubic-bezier(.4,0,.2,1);
+            --font:          'Tajawal', sans-serif;
+
+            /* Reading-mode tokens (overridden by body classes) */
+            --page-bg:    #F0F4F8;
+            --page-text:  #1A1A2E;
+            --card-bg:    #FFFFFF;
+            --hero-text:  #FFFFFF;
+        }
+
+        /* ── SEPIA MODE ── */
+        body.mode-sepia {
+            --page-bg:   #F5EDD8;
+            --page-text: #3B2A1A;
+            --card-bg:   #FBF5E6;
+            --primary:   #8B5E3C;
+            --primary-pale: #EDE0CC;
+            --bg:        #F5EDD8;
+        }
+
+        /* ── DARK MODE ── */
+        body.mode-dark {
+            --page-bg:   #0D1117;
+            --page-text: #CDD9E5;
+            --card-bg:   #161B22;
+            --primary:   #58A6FF;
+            --primary-pale: #1C2A3A;
+            --bg:        #0D1117;
+            --text-sub:  #8B949E;
+            --text-muted:#6E7681;
+            --shadow-card: 0 2px 8px rgba(0,0,0,.4);
+            --shadow-hover:0 16px 40px rgba(0,0,0,.6);
+        }
+        body.mode-dark .hero-section {
+            background: linear-gradient(135deg, #0D2545 0%, #0A3069 100%);
+        }
+        body.mode-dark .badge-hero {
+            background: rgba(88,166,255,.15) !important;
+            color: #58A6FF !important;
+        }
+        body.mode-dark .summary-box {
+            background: #161B22;
+        }
+        body.mode-dark .footer-bar {
+            background: #010409;
+        }
+        body.mode-sepia .hero-section {
+            background: linear-gradient(135deg, #6D4C2A 0%, #9C6B3C 100%);
+        }
+        body.mode-sepia .summary-box {
+            background: #FBF5E6;
+        }
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font);
+            background-color: var(--page-bg);
+            color: var(--page-text);
+            line-height: 1.8; /* Increased line-height for better breathing room */
+            transition: background-color .4s ease, color .4s ease;
+        }
+
+        /* =========================================================
+           READING MODE SWITCHER
+        ========================================================= */
+        .mode-switcher {
+            position: fixed;
+            top: 18px;
+            left: 18px;
+            z-index: 1000;
+            display: flex;
+            gap: 6px;
+            background: var(--card-bg);
+            padding: 6px 10px;
+            border-radius: var(--radius-pill);
+            box-shadow: 0 4px 16px rgba(0,0,0,.15);
+            transition: var(--transition);
+        }
+        .mode-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-size: 15px;
+            background: transparent;
+        }
+        .mode-btn:hover { transform: scale(1.15); }
+        .mode-btn.active { border-color: var(--primary); }
+        .mode-btn.btn-light-mode { color: #F9A825; }
+        .mode-btn.btn-sepia-mode { color: #8B5E3C; }
+        .mode-btn.btn-dark-mode  { color: #58A6FF; }
+        .mode-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            align-self: center;
+            margin-left: 2px;
+            font-family: var(--font);
+        }
+
+        /* =========================================================
+           FLOATING BUTTONS (PRINT + SCROLL-TOP)
+        ========================================================= */
+        .fab-group {
+            position: fixed;
+            bottom: 28px;
+            left: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 999;
+        }
+        .fab {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,.22);
+            transition: var(--transition);
+            font-size: 22px;
+        }
+        .fab:hover { transform: scale(1.12) translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.28); }
+        .fab-print  { background: var(--primary); color: #fff; }
+        .fab-top    { background: var(--accent); color: #fff; opacity: 0; pointer-events: none; }
+        .fab-top.visible { opacity: 1; pointer-events: auto; }
+        .fab .material-icons-round { font-size: 24px; }
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+        .hero-section {
+            background: linear-gradient(135deg, #0D47A1 0%, #1976D2 60%, #1E88E5 100%);
+            color: #fff;
+            padding: 90px 0 70px;
+            border-bottom-left-radius: 48px;
+            border-bottom-right-radius: 48px;
+            margin-bottom: 70px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -60px; right: -60px;
+            width: 300px; height: 300px;
+            background: rgba(255,255,255,.05);
+            border-radius: 50%;
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: -80px; left: -40px;
+            width: 220px; height: 220px;
+            background: rgba(255,255,255,.04);
+            border-radius: 50%;
+        }
+        .badge-hero {
+            background: rgba(255,255,255,.18) !important;
+            color: #fff !important;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255,255,255,.2);
+            font-size: .8rem;
+            font-family: var(--font);
+            font-weight: 500;
+            letter-spacing: .5px;
+        }
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 900;
+            letter-spacing: -1px;
+            text-shadow: 0 2px 12px rgba(0,0,0,.2);
+        }
+        .hero-sub {
+            font-size: 1.1rem;
+            opacity: .82;
+            max-width: 660px;
+            margin: 0 auto;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .hero-stat {
+            text-align: center;
+        }
+        .hero-stat-num {
+            font-size: 2.4rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .hero-stat-lbl {
+            font-size: .78rem;
+            opacity: .7;
+            margin-top: 4px;
+        }
+
+        /* =========================================================
+           SECTION HEADING
+        ========================================================= */
+        .section-heading {
+            text-align: center;
+            margin-bottom: 56px; /* Increased margin */
+        }
+        .section-eyebrow {
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 800;
+            color: var(--page-text);
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 56px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 2px;
+            margin: 14px auto 0;
+        }
+
+        /* =========================================================
+           CARDS GRID (2 Columns Desktop, 1 Column Mobile)
+        ========================================================= */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columns strictly */
+            gap: 36px; /* Increased gap for breathing room */
+        }
+
+        .constraint-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-card);
+            padding: 34px 30px; /* Increased padding */
+            box-shadow: var(--shadow-card);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0,0,0,.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .constraint-card::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--card-accent, var(--primary));
+            border-radius: 0 var(--radius-card) var(--radius-card) 0;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .constraint-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+        .constraint-card:hover::before { opacity: 1; }
+
+        /* Card colour accents */
+        .card-c1  { --card-accent: #1565C0; }
+        .card-c2  { --card-accent: #00838F; }
+        .card-c3  { --card-accent: #C62828; }
+        .card-c4  { --card-accent: #6A1B9A; }
+        .card-c5  { --card-accent: #2E7D32; }
+        .card-c6  { --card-accent: #E65100; }
+        .card-c7  { --card-accent: #4527A0; }
+        .card-c8  { --card-accent: #00695C; }
+        .card-c9  { --card-accent: #F57F17; }
+        .card-c10 { --card-accent: #1B5E20; }
+        .card-c11 { --card-accent: #37474F; }
+        .card-c12 { --card-accent: #880E4F; }
+
+        .card-header-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: var(--primary-pale);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+        .constraint-card:hover .card-icon {
+            background: var(--card-accent, var(--primary));
+        }
+        .constraint-card:hover .card-icon .material-icons-round {
+            color: #fff;
+        }
+        .card-icon .material-icons-round {
+            font-size: 26px;
+            color: var(--card-accent, var(--primary));
+            transition: var(--transition);
+        }
+        .card-num {
+            font-size: .75rem;
+            font-weight: 800;
+            color: var(--card-accent, var(--primary));
+            letter-spacing: 1px;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--page-text);
+            line-height: 1.4;
+        }
+        .card-sub {
+            font-size: .85rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .card-body-text { flex: 1; }
+
+        .card-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px;
+        }
+        .card-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: .95rem;
+            color: var(--text-sub);
+            padding: 8px 0; /* Increased padding */
+            border-bottom: 1px dashed rgba(0,0,0,.06);
+        }
+        body.mode-dark .card-list li { border-color: rgba(255,255,255,.06); }
+        .card-list li:last-child { border-bottom: none; }
+        .card-list li::before {
+            content: '◆';
+            font-size: .45rem;
+            color: var(--card-accent, var(--primary));
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .impact-box {
+            margin-top: auto;
+            padding: 14px 18px;
+            background: rgba(255,111,0,.08);
+            border-right: 3px solid var(--accent-warm);
+            border-radius: 8px;
+            font-size: .9rem;
+            color: var(--accent-warm);
+            line-height: 1.6;
+        }
+        body.mode-dark .impact-box { background: rgba(255,111,0,.12); }
+        .impact-box strong { font-weight: 700; }
+
+        /* =========================================================
+           HOVER TRANSLATION TOOLTIP
+        ========================================================= */
+        .en-term {
+            border-bottom: 2px dashed var(--primary);
+            cursor: help;
+            position: relative;
+            display: inline-block;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .en-term::after {
+            content: attr(data-ar);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) scale(.9);
+            background: var(--text-main);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: .78rem;
+            white-space: nowrap;
+            font-family: var(--font);
+            font-style: normal;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .2s ease, transform .2s ease;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,.25);
+        }
+        .en-term::before {
+            content: '';
+            position: absolute;
+            bottom: calc(100% + 4px);
+            left: 50%;
+            transform: translateX(-50%) scale(.9);
+            border: 5px solid transparent;
+            border-top-color: var(--text-main);
+            opacity: 0;
+            transition: opacity .2s ease, transform .2s ease;
+            z-index: 100;
+        }
+        .en-term:hover::after,
+        .en-term:hover::before {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        body.mode-dark .en-term::after { background: #CDD9E5; color: #0D1117; }
+        body.mode-dark .en-term::before { border-top-color: #CDD9E5; }
+
+        /* =========================================================
+           SUMMARY SECTION
+        ========================================================= */
+        .summary-section { margin-top: 80px; }
+        .summary-box {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 42px 38px;
+            box-shadow: var(--shadow-card);
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+        .summary-item {
+            text-align: center;
+            padding: 24px 18px;
+            border-radius: 14px;
+            background: var(--primary-pale);
+            transition: var(--transition);
+        }
+        .summary-item:hover {
+            transform: translateY(-4px);
+            background: var(--primary);
+        }
+        .summary-item:hover .summary-en,
+        .summary-item:hover .summary-ar { color: #fff; }
+        .summary-icon { font-size: 32px; margin-bottom: 12px; }
+        .summary-en {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+        .summary-ar {
+            font-size: .85rem;
+            color: var(--text-sub);
+            margin-top: 6px;
+            transition: var(--transition);
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+        .footer-bar {
+            background: #0D1117;
+            color: rgba(255,255,255,.6);
+            text-align: center;
+            padding: 28px;
+            margin-top: 80px;
+            font-size: .85rem;
+        }
+
+        /* =========================================================
+           CONTAINER UTILITY
+        ========================================================= */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* =========================================================
+           PRINT STYLES
+        ========================================================= */
+        @media print {
+            .mode-switcher, .fab-group { display: none !important; }
+            .hero-section { border-radius: 0; }
+            .constraint-card { break-inside: avoid; }
+            body { background: #fff !important; color: #000 !important; }
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+        @media (max-width: 768px) {
+            .hero-section { padding: 70px 0 50px; border-radius: 0 0 32px 32px; margin-bottom: 50px; }
+            .hero-stats { gap: 24px; }
+            .hero-stat-num { font-size: 1.8rem; }
+            .mode-switcher { top: 12px; left: 12px; padding: 5px 8px; gap: 4px; }
+            .mode-label { display: none; }
+            .fab-group { bottom: 20px; left: 16px; }
+            .fab { width: 46px; height: 46px; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            .cards-grid { grid-template-columns: 1fr; } /* 1 Column for Mobile */
+        }
+
+        @media (max-width: 480px) {
+            .hero-title { font-size: 1.8rem; }
+            .summary-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="mode-light">
+
+<div class="mode-switcher" role="group" aria-label="وضع القراءة">
+    <span class="mode-label">وضع</span>
+    <button class="mode-btn btn-light-mode active" onclick="setMode('light')" title="الوضع العادي" aria-label="الوضع العادي">☀️</button>
+    <button class="mode-btn btn-sepia-mode"        onclick="setMode('sepia')" title="وضع سيبيا"   aria-label="وضع سيبيا">📜</button>
+    <button class="mode-btn btn-dark-mode"         onclick="setMode('dark')"  title="الوضع الليلي" aria-label="الوضع الليلي">🌙</button>
+</div>
+
+<div class="fab-group">
+    <button class="fab fab-print"  onclick="window.print()" title="طباعة الصفحة" aria-label="طباعة">
+        <span class="material-icons-round">print</span>
+    </button>
+    <button class="fab fab-top" id="fabTop" onclick="scrollToTop()" title="العودة للأعلى" aria-label="للأعلى">
+        <span class="material-icons-round">keyboard_arrow_up</span>
+    </button>
+</div>
+
+<header class="hero-section" id="top">
+    <div class="container" style="text-align:center; position:relative; z-index:1;">
+        <span class="badge badge-hero mb-3 px-4 py-2" style="border-radius:999px; display:inline-block;">تحليل مالي استراتيجي</span>
+        <h1 class="hero-title mt-2 mb-4">قيود قرارات الاستثمار</h1>
+        <p class="hero-sub">ما وراء الأرقام المحاسبية — العوامل الـ 12 الحاسمة التي تحدد مصير المشاريع الاستثمارية في الواقع العملي، ولا تظهر في أي جدول بيانات.</p>
+
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-num">12</div>
+                <div class="hero-stat-lbl">قيد حاسم</div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section>
+        <div class="section-heading">
+            <div class="section-eyebrow">الدليل التطبيقي الشامل</div>
+            <h2 class="section-title">القيود الـ 12 الحاسمة</h2>
+        </div>
+
+        <div class="cards-grid">
+
+            <article class="constraint-card card-c1">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">monetization_on</span>
+                    </div>
+                    <div>
+                        <div class="card-num">01 &mdash; التمويل</div>
+                        <div class="card-title">التمويل ورأس المال</div>
+                        <div class="card-sub">هل المال متوفر؟ وبأي تكلفة فعلية؟</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li><span class="en-term" data-ar="ترشيد رأس المال">Capital Rationing</span> — ميزانية استثمارية محدودة تجبر على الاختيار بين مشاريع.</li>
+                    <li>ارتفاع أسعار الفائدة يرفع تكلفة <span class="en-term" data-ar="الدين / الاقتراض">Debt</span> ويضغط على العائد الصافي.</li>
+                    <li>شروط المقرضين (<span class="en-term" data-ar="اشتراطات تعاقدية">Covenants</span>) تقيّد الاستثمار الجديد أحيانًا.</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> اختيار مشاريع بعائد أقل لأنها تتناسب مع القدرة التمويلية المتاحة فعلًا.
+                </div>
+            </article>
+
+            <article class="constraint-card card-c2">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">water_drop</span>
+                    </div>
+                    <div>
+                        <div class="card-num">02 &mdash; السيولة</div>
+                        <div class="card-title">السيولة والتدفقات النقدية</div>
+                        <div class="card-sub">الربح محاسبي، أما النقد فحقيقة لا تقبل التأجيل.</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li>مشاريع تستنزف النقد لسنوات قبل أن تولّد أي عائد (<span class="en-term" data-ar="فترة الاسترداد">Payback Period</span> طويلة).</li>
+                    <li>قيود <span class="en-term" data-ar="رأس المال العامل">Working Capital</span> تعيق بدء التشغيل.</li>
+                    <li>التزامات تشغيلية عاجلة تعيد ترتيب الأولويات قسرًا.</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> رفض مشاريع ممتازة ماليًا لحاجة الشركة الفورية لسيولة تشغيلية.
+                </div>
+            </article>
+
+            <article class="constraint-card card-c3">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">trending_down</span>
+                    </div>
+                    <div>
+                        <div class="card-num">03 &mdash; المخاطر</div>
+                        <div class="card-title">المخاطر وعدم اليقين</div>
+                        <div class="card-sub">نطاق النتائج قد يكون واسعًا ومكلفًا.</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li>مخاطر السوق والمنافسة غير المتوقعة (<span class="en-term" data-ar="التقلب / عدم الاستقرار">Volatility</span>).</li>
+                    <li>مخاطر التشغيل والتنفيذ: التأخر، تجاوز الميزانية، فشل التقنية.</li>
+                    <li>تقلبات العملة والتضخم تؤثر على <span class="en-term" data-ar="صافي القيمة الحالية">NPV</span> الفعلي.</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> طلب هامش أمان أعلى، التدرج في الاستثمار، أو <span class="en-term" data-ar="تحليل السيناريوهات">Scenario Analysis</span>.
+                </div>
+            </article>
+
+            <article class="constraint-card card-c4">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">gavel</span>
+                    </div>
+                    <div>
+                        <div class="card-num">04 &mdash; القانون</div>
+                        <div class="card-title">القيود القانونية والتنظيمية</div>
+                        <div class="card-sub">المشروع المربح قد يكون مقيدًا أو ممنوعًا.</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li>تراخيص البناء والبيئة وموافقات الجهات الحكومية المتعددة.</li>
+                    <li>قوانين منع الاحتكار (<span class="en-term" data-ar="مكافحة الاحتكار">Anti-trust</span>) تحد من الاستحواذات.</li>
+                    <li>متطلبات التوطين (<span class="en-term" data-ar="المحتوى المحلي">Local Content</span>) ترفع التكاليف.</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> مقبول ماليًا لكن غير ممكن قانونيًا — الامتثال يسبق الربحية دائمًا.
+                </div>
+            </article>
+
+            <article class="constraint-card card-c5">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">psychology</span>
+                    </div>
+                    <div>
+                        <div class="card-num">05 &mdash; الاستراتيجية</div>
+                        <div class="card-title">الملاءمة الاستراتيجية</div>
+                        <div class="card-sub">هل يشبهنا هذا المشروع؟ هل يعزز مكانتنا؟</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li>تعارض المشروع مع <span class="en-term" data-ar="نموذج الأعمال">Business Model</span> الجوهري للشركة.</li>
+                    <li>تشتيت التركيز عن <span class="en-term" data-ar="الكفاءة الجوهرية / النشاط الأساسي">Core Competency</span>.</li>
+                    <li>التأثير على <span class="en-term" data-ar="الميزة التنافسية">Competitive Advantage</span> على المدى البعيد.</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> تفضيل مشاريع تعزز الميزة التنافسية حتى لو كان عائدها أقل على المدى القصير.
+                </div>
+            </article>
+
+            <article class="constraint-card card-c6">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">groups</span>
+                    </div>
+                    <div>
+                        <div class="card-num">06 &mdash; الموارد البشرية</div>
+                        <div class="card-title">القدرات البشرية والتنظيمية</div>
+                        <div class="card-sub">المال موجود — لكن من سيُنفّذ ويُدير؟</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li>نقص المهارات التخصصية اللازمة (<span class="en-term" data-ar="فجوة المهارات">Skill Gap</span>).</li>
+                    <li>انشغال الإدارة العليا وضيق <span class="en-term" data-ar="التركيز / الاهتمام الإداري">Management Bandwidth</span>.</li>
+                    <li>مقاومة التغيير داخليًا تُبطّئ التنفيذ.</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> التأجيل، <span class="en-term" data-ar="التعهيد / الاستعانة بجهة خارجية">Outsourcing</span>، أو رفع الميزانية للتدريب قبل البدء.
+                </div>
+            </article>
+
+            <article class="constraint-card card-c7">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">factory</span>
+                    </div>
+                    <div>
+                        <div class="card-num">07 &mdash; البنية التحتية</div>
+                        <div class="card-title">البنية التحتية والطاقة التشغيلية</div>
+                        <div class="card-sub">القدرة التشغيلية الفعلية تحد من التوسع.</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li>طاقة إنتاجية محدودة (<span class="en-term" data-ar="قيد الطاقة الإنتاجية">Capacity Constraint</span>) لا تستوعب النمو الجديد.</li>
+                    <li>قيود لوجستية: نقل، مستودعات، سلاسل إمداد هشة.</li>
+                    <li>بنية تحتية تقنية متهالكة تحتاج استبدالًا قبل التوسع.</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> استثمارات تمهيدية إلزامية (<span class="en-term" data-ar="البنية التحتية أولًا">Infrastructure First</span>) قبل المشروع الرئيسي.
+                </div>
+            </article>
+
+            <article class="constraint-card card-c8">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">storefront</span>
+                    </div>
+                    <div>
+                        <div class="card-num">08 &mdash; السوق</div>
+                        <div class="card-title">قيود السوق والطلب</div>
+                        <div class="card-sub">الطاقة الإنتاجية لا تعني وجود الطلب.</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li>حجم سوق محدود أو نمو ضعيف لا يستوعب الطاقة المخططة.</li>
+                    <li>قنوات توزيع مغلقة أو محتكرة من المنافسين.</li>
+                    <li>قوة تفاوض العملاء الكبار (<span class="en-term" data-ar="قوة المشتري">Buyer Power</span>) تضغط على الهامش.</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> تقليص السعة الإنتاجية أو تغيير نموذج التسعير وإعادة تقييم <span class="en-term" data-ar="حصة السوق المستهدفة">Market Share</span>.
+                </div>
+            </article>
+
+            <article class="constraint-card card-c9">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">schedule</span>
+                    </div>
+                    <div>
+                        <div class="card-num">09 &mdash; الوقت</div>
+                        <div class="card-title">القيود الزمنية والتوقيت</div>
+                        <div class="card-sub">التوقيت الخاطئ يكسر أي مشروع صحيح.</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li>نافذة سوق ضيقة أو موسمية تنتهي قبل إتمام التهيئة.</li>
+                    <li>دورة مشتريات حكومية طويلة تستنزف السيولة انتظارًا.</li>
+                    <li>تأخر التراخيص يُفقد الميزة التنافسية لصالح منافس أسرع.</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> انهيار <span class="en-term" data-ar="معدل العائد الداخلي">IRR</span> وصافي القيمة الحالية إذا تأخر الإطلاق عن النافذة المثلى.
+                </div>
+            </article>
+
+            <article class="constraint-card card-c10">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">analytics</span>
+                    </div>
+                    <div>
+                        <div class="card-num">10 &mdash; المعلومات</div>
+                        <div class="card-title">جودة البيانات والتحيزات</div>
+                        <div class="card-sub">القرار بجودة المدخلات — "بيانات مزيفة = نتائج مزيفة".</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li>بيانات تكلفة غير موثوقة أو مبنية على افتراضات متفائلة.</li>
+                    <li><span class="en-term" data-ar="تحيز التفاؤل">Optimism Bias</span>: المديرون يبالغون في تقدير العائد بنسبة 20-40% في المتوسط.</li>
+                    <li>صعوبة قياس المنافع غير المالية (<span class="en-term" data-ar="السمعة التجارية / الشهرة">Goodwill</span>، الرضا، الولاء).</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> اختبارات <span class="en-term" data-ar="النموذج الأولي / الحد الأدنى من المنتج">MVP</span> قبل التوسع، وإلزامية <span class="en-term" data-ar="تحليل الحساسية">Sensitivity Analysis</span>.
+                </div>
+            </article>
+
+            <article class="constraint-card card-c11">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">balance</span>
+                    </div>
+                    <div>
+                        <div class="card-num">11 &mdash; الحوكمة</div>
+                        <div class="card-title">الحوكمة والسياسة الداخلية</div>
+                        <div class="card-sub">البيروقراطية تقتل المشاريع بالتأخير لا بالرفض الصريح.</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li>تضارب مصالح بين الإدارات حول ملكية المشروع وموارده.</li>
+                    <li>سلاسل موافقات مطولة (<span class="en-term" data-ar="بيروقراطية / روتين إداري">Bureaucracy</span>) تستنزف الزخم.</li>
+                    <li>قرارات مُسيّسة بدوافع ترقية لا بمعطيات مالية.</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> تعطّل مشاريع ناجحة لأسباب غير اقتصادية بالكامل — الحل يبدأ بـ<span class="en-term" data-ar="حوكمة الشركات">Corporate Governance</span> السليمة.
+                </div>
+            </article>
+
+            <article class="constraint-card card-c12">
+                <div class="card-header-row">
+                    <div class="card-icon">
+                        <span class="material-icons-round">public</span>
+                    </div>
+                    <div>
+                        <div class="card-num">12 &mdash; الاستدامة</div>
+                        <div class="card-title">السمعة والاستدامة (ESG)</div>
+                        <div class="card-sub">ما لا يُقاس ماليًا قد يُكلف أكثر من أي ميزانية.</div>
+                    </div>
+                </div>
+                <ul class="card-list">
+                    <li>متطلبات بيئية واجتماعية متصاعدة تحت إطار <span class="en-term" data-ar="البيئة، المجتمع، الحوكمة">ESG</span>.</li>
+                    <li>مخاطر السمعة والرفض المجتمعي (<span class="en-term" data-ar="الترخيص الاجتماعي بالتشغيل">Social License to Operate</span>).</li>
+                    <li>متطلبات <span class="en-term" data-ar="المسؤولية الاجتماعية للشركات">CSR</span> والإفصاح تُضاف كتكاليف حقيقية.</li>
+                </ul>
+                <div class="impact-box">
+                    <strong>⚡ الأثر العملي:</strong> تكاليف امتثال إضافية، إعادة تصميم المشروع، أو إلغائه حمايةً لرأس المال غير الملموس.
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <section class="summary-section">
+        <div class="section-heading">
+            <div class="section-eyebrow">الملخص التنفيذي</div>
+            <h2 class="section-title">كيف تُدار هذه القيود؟</h2>
+        </div>
+
+        <div class="summary-box">
+            <p style="color: var(--text-sub); font-size:.95rem; margin-bottom:8px;">خمس استراتيجيات تُحوّل القيود من عوائق إلى معطيات قابلة للإدارة:</p>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-icon">🗂️</div>
+                    <div class="summary-en">Portfolio</div>
+                    <div class="summary-ar">موازنة العائد بالسيولة عبر محفظة متنوعة</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-icon">🧪</div>
+                    <div class="summary-en">MVP First</div>
+                    <div class="summary-ar">الاختبار المرحلي قبل الاستثمار الكامل</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-icon">🤝</div>
+                    <div class="summary-en">Partnerships</div>
+                    <div class="summary-ar">المشاركة والتمويل البديل لتوزيع المخاطر</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-icon">📊</div>
+                    <div class="summary-en">Scenario Analysis</div>
+                    <div class="summary-ar">اكتشاف ما يكسر المشروع قبل أن يكسره</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-icon">🧑‍💼</div>
+                    <div class="summary-en">Capability Building</div>
+                    <div class="summary-ar">سد فجوات القدرات البشرية والتقنية</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer-bar">
+    <p>© 2025 — جميع الحقوق محفوظة &nbsp;|&nbsp; تحليل مالي استراتيجي</p>
+</footer>
+
+<script>
+    /* ── READING MODE ── */
+    function setMode(mode) {
+        document.body.className = 'mode-' + mode;
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector('.btn-' + mode + '-mode').classList.add('active');
+        localStorage.setItem('readMode', mode);
+    }
+    (function () {
+        const saved = localStorage.getItem('readMode') || 'light';
+        setMode(saved);
+    })();
+
+    /* ── SCROLL-TO-TOP FAB ── */
+    const fabTop = document.getElementById('fabTop');
+    window.addEventListener('scroll', () => {
+        fabTop.classList.toggle('visible', window.scrollY > 320);
+    });
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>
