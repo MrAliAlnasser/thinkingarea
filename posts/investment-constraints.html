@@ -409,10 +409,21 @@
             border-radius: 8px;
             font-size: .9rem;
             color: var(--accent-warm);
-            line-height: 1.6;
+            line-height: 1.7;
         }
         body.mode-dark .impact-box { background: rgba(255,111,0,.12); }
-        .impact-box strong { font-weight: 700; }
+        .impact-box .impact-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: .82rem;
+            letter-spacing: .4px;
+            opacity: .85;
+        }
+        .impact-box .impact-text {
+            display: block;
+            font-weight: 500;
+        }
 
         /* =========================================================
            HOVER TRANSLATION TOOLTIP
@@ -621,7 +632,8 @@
                     <li>شروط المقرضين (<span class="en-term" data-ar="اشتراطات تعاقدية">Covenants</span>) تقيّد الاستثمار الجديد أحيانًا.</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> اختيار مشاريع بعائد أقل لأنها تتناسب مع القدرة التمويلية المتاحة فعلًا.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">تُرفَض مشاريع ذات عائد مرتفع لصالح مشاريع أصغر تتسع لها الميزانية المتاحة، أو يُؤجَّل الاستثمار كليًا حتى تتحسن شروط التمويل.</span>
                 </div>
             </article>
 
@@ -642,7 +654,8 @@
                     <li>التزامات تشغيلية عاجلة تعيد ترتيب الأولويات قسرًا.</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> رفض مشاريع ممتازة ماليًا لحاجة الشركة الفورية لسيولة تشغيلية.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">مشاريع ممتازة على الورق تُرفَض لأن الشركة لا تستطيع تحمّل شحّ النقد خلال سنوات الاسترداد، حتى لو كان العائد النهائي مجزيًا.</span>
                 </div>
             </article>
 
@@ -663,7 +676,8 @@
                     <li>تقلبات العملة والتضخم تؤثر على <span class="en-term" data-ar="صافي القيمة الحالية">NPV</span> الفعلي.</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> طلب هامش أمان أعلى، التدرج في الاستثمار، أو <span class="en-term" data-ar="تحليل السيناريوهات">Scenario Analysis</span>.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">يُشترَط عائد أعلى من معدل القبول المعتاد، ويُجزَّأ الاستثمار على مراحل، مع إعداد سيناريو تعافٍ قبل الموافقة على أي مشروع.</span>
                 </div>
             </article>
 
@@ -684,7 +698,8 @@
                     <li>متطلبات التوطين (<span class="en-term" data-ar="المحتوى المحلي">Local Content</span>) ترفع التكاليف.</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> مقبول ماليًا لكن غير ممكن قانونيًا — الامتثال يسبق الربحية دائمًا.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">مشروع مقبول ماليًا يُوقَف أو يُعاد تصميمه بالكامل بسبب ترخيص واحد مرفوض أو اشتراط توطين يرفع التكلفة فوق نقطة التعادل.</span>
                 </div>
             </article>
 
@@ -705,7 +720,8 @@
                     <li>التأثير على <span class="en-term" data-ar="الميزة التنافسية">Competitive Advantage</span> على المدى البعيد.</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> تفضيل مشاريع تعزز الميزة التنافسية حتى لو كان عائدها أقل على المدى القصير.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">تُفضَّل مشاريع تُعمِّق الميزة التنافسية الجوهرية حتى لو كان عائدها القصير أدنى، وتُرفَض مشاريع مربحة لأنها تشتت الهوية الاستراتيجية للشركة.</span>
                 </div>
             </article>
 
@@ -726,7 +742,8 @@
                     <li>مقاومة التغيير داخليًا تُبطّئ التنفيذ.</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> التأجيل، <span class="en-term" data-ar="التعهيد / الاستعانة بجهة خارجية">Outsourcing</span>، أو رفع الميزانية للتدريب قبل البدء.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">يُؤجَّل الإطلاق ريثما تُسدّ فجوة المهارات، أو تُرفَع ميزانية التشغيل لتغطية التعهيد والتدريب — وهو ما يُعيد حساب الجدوى من الأساس.</span>
                 </div>
             </article>
 
@@ -747,7 +764,8 @@
                     <li>بنية تحتية تقنية متهالكة تحتاج استبدالًا قبل التوسع.</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> استثمارات تمهيدية إلزامية (<span class="en-term" data-ar="البنية التحتية أولًا">Infrastructure First</span>) قبل المشروع الرئيسي.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">يُستلزَم استثمار تمهيدي في البنية التحتية قبل المشروع الرئيسي، مما يرفع رأس المال المطلوب ويُطيل فترة الاسترداد الفعلية.</span>
                 </div>
             </article>
 
@@ -768,7 +786,8 @@
                     <li>قوة تفاوض العملاء الكبار (<span class="en-term" data-ar="قوة المشتري">Buyer Power</span>) تضغط على الهامش.</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> تقليص السعة الإنتاجية أو تغيير نموذج التسعير وإعادة تقييم <span class="en-term" data-ar="حصة السوق المستهدفة">Market Share</span>.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">تُخفَّض الطاقة الإنتاجية المخططة أو يُعاد تسعير المنتج، وكثيرًا ما يُستبدَل نموذج البيع المباشر بالشراكات للنفاذ إلى قنوات التوزيع المغلقة.</span>
                 </div>
             </article>
 
@@ -789,7 +808,8 @@
                     <li>تأخر التراخيص يُفقد الميزة التنافسية لصالح منافس أسرع.</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> انهيار <span class="en-term" data-ar="معدل العائد الداخلي">IRR</span> وصافي القيمة الحالية إذا تأخر الإطلاق عن النافذة المثلى.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">التأخر عن النافذة المثلى للإطلاق يُسقط العائد الداخلي ويُحوّل المشروع من رابح إلى خاسر — دون أن يتغير فيه شيء سوى التوقيت.</span>
                 </div>
             </article>
 
@@ -810,7 +830,8 @@
                     <li>صعوبة قياس المنافع غير المالية (<span class="en-term" data-ar="السمعة التجارية / الشهرة">Goodwill</span>، الرضا، الولاء).</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> اختبارات <span class="en-term" data-ar="النموذج الأولي / الحد الأدنى من المنتج">MVP</span> قبل التوسع، وإلزامية <span class="en-term" data-ar="تحليل الحساسية">Sensitivity Analysis</span>.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">قرارات تبدو سليمة تنهار عند التنفيذ بسبب أرقام متضخمة؛ لذا يُشترَط اختبار نموذج أولي وتحليل حساسية إلزامي قبل الموافقة على أي توسع.</span>
                 </div>
             </article>
 
@@ -831,7 +852,8 @@
                     <li>قرارات مُسيّسة بدوافع ترقية لا بمعطيات مالية.</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> تعطّل مشاريع ناجحة لأسباب غير اقتصادية بالكامل — الحل يبدأ بـ<span class="en-term" data-ar="حوكمة الشركات">Corporate Governance</span> السليمة.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">مشاريع ناجحة تُعطَّل أو تُقتَل بالتأخير لا بالرفض الصريح؛ الحل الوحيد هو إصلاح هيكل الحوكمة وتحديد صلاحيات القرار بوضوح قبل بدء أي مشروع.</span>
                 </div>
             </article>
 
@@ -852,7 +874,8 @@
                     <li>متطلبات <span class="en-term" data-ar="المسؤولية الاجتماعية للشركات">CSR</span> والإفصاح تُضاف كتكاليف حقيقية.</li>
                 </ul>
                 <div class="impact-box">
-                    <strong>⚡ الأثر العملي:</strong> تكاليف امتثال إضافية، إعادة تصميم المشروع، أو إلغائه حمايةً لرأس المال غير الملموس.
+                    <span class="impact-label">⚡ الأثر الملموس للقيد</span>
+                    <span class="impact-text">تكاليف الامتثال البيئي والاجتماعي تُضاف فعليًا إلى الميزانية، وقد تُفضي مقاومة المجتمع إلى إلغاء المشروع بعد الاستثمار الأولي فيه.</span>
                 </div>
             </article>
 
@@ -900,7 +923,7 @@
 </main>
 
 <footer class="footer-bar">
-    <p>© 2025 — جميع الحقوق محفوظة &nbsp;|&nbsp; تحليل مالي استراتيجي</p>
+    <p>© 2026 — جميع الحقوق محفوظة &nbsp;|&nbsp; ساحة تفكير</p>
 </footer>
 
 <script>
