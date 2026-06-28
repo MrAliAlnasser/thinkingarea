@@ -496,6 +496,16 @@
       color: var(--ink-soft);
       border: 1px solid var(--border);
       font-size: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.8);
+      transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.15s;
+    }
+
+    .fab-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
     }
 
     /* ─── Print Styles ─── */
@@ -583,6 +593,7 @@
       <li><a href="#sec-food" onclick="closeTocNav()"><span class="toc-icon">☕</span> أدوات الطعام والشراب</a></li>
       <li><a href="#sec-sleep" onclick="closeTocNav()"><span class="toc-icon">🛏️</span> النوم والعناية الشخصية</a></li>
       <li><a href="#sec-tech" onclick="closeTocNav()"><span class="toc-icon">📡</span> الإنترنت والتقنية</a></li>
+      <li><a href="#sec-car" onclick="closeTocNav()"><span class="toc-icon">🚗</span> تجهيز السيّارة للسفر</a></li>
       <li><a href="#sec-home" onclick="closeTocNav()"><span class="toc-icon">🏠</span> منزلك قبل السفر</a></li>
       <li><a href="#sec-hotel" onclick="closeTocNav()"><span class="toc-icon">🕌</span> نصائح السكن</a></li>
     </ul>
@@ -658,6 +669,7 @@
       <ul class="items-list">
         <li class="item"><input type="checkbox" id="ic1" /><label for="ic1" class="item-label">🧷 حفّاضات الطفل</label></li>
         <li class="item"><input type="checkbox" id="ic2" /><label for="ic2" class="item-label">🍼 حليب صناعي</label></li>
+        <li class="item"><input type="checkbox" id="ic3" /><label for="ic3" class="item-label">🚼 عربة أطفال متنقّلة لحديثي الولادة <span class="note">بأربع عجلات</span></label></li>
       </ul>
     </div>
   </section>
@@ -783,6 +795,30 @@
   </section>
 
 
+  <!-- ── Section: Car Prep ── -->
+  <section class="section" id="sec-car">
+    <div class="section-header" onclick="toggleSection(this)">
+      <span class="icon">🚗</span>
+      <h2>تجهيز السيّارة للسفر</h2>
+      <span class="badge" style="background:#fde8cc; color:#c07820;">تجهيز السيّارة</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="section-body">
+      <ul class="items-list">
+        <li class="item"><input type="checkbox" id="f01" /><label for="f01" class="item-label">🛢️ فحص زيت المحرّك <span class="note">التأكّد من المستوى والنظافة قبل الرحلة</span></label></li>
+        <li class="item"><input type="checkbox" id="f02" /><label for="f02" class="item-label">🌡️ فحص سائل تبريد المحرّك</label></li>
+        <li class="item"><input type="checkbox" id="f03" /><label for="f03" class="item-label">⚙️ فحص مستوى ضغط الإطارات</label></li>
+        <li class="item"><input type="checkbox" id="f04" /><label for="f04" class="item-label">🔄 فحص الإطار الاحتياطي <span class="note">التأكّد من ضغطه وجاهزيته</span></label></li>
+        <li class="item"><input type="checkbox" id="f05" /><label for="f05" class="item-label">🔧 أدوات تغيير الإطار <span class="note">رافعة، مفتاح صواميل العجلات، مثلّث عاكس، قفّازات</span></label></li>
+        <li class="item"><input type="checkbox" id="f06" /><label for="f06" class="item-label">💨 منفاخ الإطارات</label></li>
+        <li class="item"><input type="checkbox" id="f07" /><label for="f07" class="item-label">🔋 أسلاك اشتراك البطارية <span class="note">Jumper Cables</span></label></li>
+        <li class="item"><input type="checkbox" id="f08" /><label for="f08" class="item-label">🩹 أدوات الطوارئ <span class="note">لاصق للجروح وإسعافات أولية بسيطة</span></label></li>
+        <li class="item"><input type="checkbox" id="f09" /><label for="f09" class="item-label">🔌 شاحن هواتف ذكية للسيّارة <span class="note">يفضّل أن يحتوي على أكثر من مدخل USB</span></label></li>
+      </ul>
+    </div>
+  </section>
+
+
   <!-- ── Notes: Home ── -->
   <div class="notes-section" id="sec-home" style="border-right-color: #c0392b;">
     <h3 style="color: #c0392b;">🏠 ملاحظات قبل السفر — منزلك الحالي</h3>
@@ -855,6 +891,13 @@
   });
 
   updateProgress();
+
+  /* ── Scroll-to-top visibility ── */
+  const fabTop = document.querySelector('.fab-top');
+  window.addEventListener('scroll', () => {
+    fabTop.classList.toggle('visible', window.scrollY > 200);
+  }, { passive: true });
+
 </script>
 
 </body>
