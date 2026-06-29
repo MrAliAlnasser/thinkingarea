@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جدول سداد الجمعية الشهرية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f3ef;
+  --surface: #fffef9;
+  --surface-2: #ffffff;
+  --border: #e2ddd4;
+  --border-strong: #c9c3b8;
+  --text: #1a1714;
+  --text-2: #5a534a;
+  --text-3: #9a9087;
+  --accent: #b85c38;
+  --accent-light: #f5ede8;
+  --accent-dark: #7d3d23;
+  --gold: #c49a2a;
+  --gold-light: #fdf6e3;
+  --green: #2d7a4a;
+  --green-light: #e8f5ed;
+  --green-dark: #1d5233;
+  --warn: #a0620c;
+  --warn-light: #fef3e2;
+  --shadow-sm: 0 1px 3px rgba(26,23,20,0.06), 0 1px 2px rgba(26,23,20,0.04);
+  --shadow-md: 0 4px 16px rgba(26,23,20,0.08), 0 2px 6px rgba(26,23,20,0.04);
+  --shadow-lg: 0 12px 40px rgba(26,23,20,0.1), 0 4px 12px rgba(26,23,20,0.06);
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --font: 'Tajawal', sans-serif;
+  --font-size-base: clamp(14px, 2vw, 16px);
+  --font-size-lg: clamp(16px, 2.5vw, 19px);
+  --font-size-xl: clamp(22px, 4vw, 32px);
+  --font-size-xxl: clamp(28px, 6vw, 48px);
+  --max-w: 900px;
+  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+[data-theme="dark"] {
+  --bg: #111009;
+  --surface: #1c1a15;
+  --surface-2: #252219;
+  --border: #2e2b22;
+  --border-strong: #3d392e;
+  --text: #f0ece4;
+  --text-2: #a09880;
+  --text-3: #6a6254;
+  --accent: #d4784e;
+  --accent-light: #2a1a10;
+  --gold: #d4aa3a;
+  --gold-light: #1f1a0a;
+  --green: #4aaa6a;
+  --green-light: #0d1f13;
+  --green-dark: #6dd48a;
+  --warn: #c8840e;
+  --warn-light: #1e1408;
+}
+
+[data-theme="sepia"] {
+  --bg: #f4ede0;
+  --surface: #faf6ef;
+  --surface-2: #fff9f0;
+  --border: #d9cdb8;
+  --text: #2c1f0e;
+  --text-2: #6b5540;
+  --text-3: #9a8468;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: var(--font-size-base); }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.85;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* ── Progress Bar ── */
+#read-progress {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: var(--border);
+  z-index: 1000;
+}
+#read-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 100%);
+  width: 0%;
+  transition: width 0.1s;
+}
+
+/* ── Hero ── */
+.hero {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 3rem 1.5rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(184,92,56,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  text-transform: uppercase;
+  background: var(--accent-light);
+  border: 1px solid rgba(184,92,56,0.15);
+  padding: 5px 14px;
+  border-radius: 99px;
+  margin-bottom: 1.2rem;
+}
+
+.hero h1 {
+  font-size: var(--font-size-xxl);
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+}
+
+.hero-sub {
+  font-size: var(--font-size-lg);
+  color: var(--text-2);
+  margin-bottom: 2rem;
+}
+
+.hero-meta {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.hero-meta-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.hero-meta-val {
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 800;
+  color: var(--accent);
+  font-feature-settings: "tnum";
+}
+
+.hero-meta-lbl {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.hero-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+  align-self: center;
+}
+
+/* ── Layout ── */
+.page-wrapper {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* ── Section title ── */
+.section-title {
+  font-size: clamp(15px, 2.5vw, 18px);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  margin-right: 6px;
+}
+
+/* ── Stat Cards ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.2rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.stat-card.accent-card {
+  border-color: rgba(184,92,56,0.2);
+  background: var(--accent-light);
+}
+
+.stat-val {
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+  font-feature-settings: "tnum";
+}
+
+.stat-card.accent-card .stat-val { color: var(--accent); }
+
+.stat-lbl {
+  font-size: 11.5px;
+  color: var(--text-3);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.stat-sub {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+/* ── Progress ── */
+.progress-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.progress-label { font-size: 14px; font-weight: 600; color: var(--text); }
+
+.progress-pct {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.progress-track {
+  background: var(--border);
+  border-radius: 99px;
+  height: 10px;
+  overflow: hidden;
+  margin-bottom: 0.8rem;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--accent-dark), var(--accent), var(--gold));
+  transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+}
+
+.progress-segments {
+  display: flex;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--text-3);
+}
+
+.progress-seg { display: flex; align-items: center; gap: 4px; }
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-paid { background: var(--green); }
+.dot-received { background: var(--gold); }
+.dot-pending { background: var(--border-strong); }
+
+/* ── Controls ── */
+.controls-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 160px;
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.search-box:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(184,92,56,0.12);
+}
+
+.filter-btn {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.filter-btn:hover { border-color: var(--border-strong); background: var(--surface-2); }
+
+.filter-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(184,92,56,0.28);
+}
+
+/* ── Table ── */
+.table-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+}
+
+.table-scroll { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  min-width: 560px;
+}
+
+thead {
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+
+thead th {
+  padding: 11px 14px;
+  text-align: right;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-3);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: color var(--transition);
+}
+thead th.sortable:hover { color: var(--accent); }
+
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--surface-2); }
+
+tbody tr.row-received { background: rgba(196,154,42,0.06); }
+tbody tr.row-received:hover { background: rgba(196,154,42,0.1); }
+
+tbody td {
+  padding: 12px 14px;
+  vertical-align: middle;
+  color: var(--text);
+}
+
+/* ── Row Number ── */
+.row-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-3);
+  font-feature-settings: "tnum";
+}
+
+/* ── Month cell ── */
+.month-cell { font-weight: 600; color: var(--text); }
+.month-cell small { display: block; font-size: 11px; color: var(--text-3); font-weight: 400; margin-top: 1px; }
+
+/* ── Date cell ── */
+.date-cell { font-size: 12.5px; color: var(--text-2); font-feature-settings: "tnum"; }
+
+/* ── Amount ── */
+.amount-cell {
+  font-weight: 700;
+  font-feature-settings: "tnum";
+  font-size: 14px;
+}
+
+.cum-cell {
+  font-size: 12px;
+  color: var(--text-3);
+  font-feature-settings: "tnum";
+}
+
+/* ── Status Badge ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  font-family: var(--font);
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.badge:hover { opacity: 0.82; transform: scale(0.97); }
+
+.badge-paid {
+  background: var(--green-light);
+  color: var(--green-dark);
+  border-color: rgba(45,122,74,0.2);
+}
+
+.badge-received {
+  background: var(--gold-light);
+  color: var(--accent-dark);
+  border-color: rgba(196,154,42,0.25);
+}
+
+.badge-pending {
+  background: var(--warn-light);
+  color: var(--warn);
+  border-color: rgba(160,98,12,0.15);
+}
+
+/* ── Received Callout ── */
+.received-row-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold);
+  background: var(--gold-light);
+  border: 1px solid rgba(196,154,42,0.25);
+  border-radius: 6px;
+  padding: 2px 8px;
+  margin-top: 4px;
+  width: fit-content;
+}
+
+/* ── Callout Banner ── */
+.callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--gold-light);
+  border: 1px solid rgba(196,154,42,0.3);
+  border-right: 3px solid var(--gold);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.5rem;
+  font-size: 14px;
+  color: var(--text-2);
+}
+
+.callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.callout strong { color: var(--text); }
+
+/* ── Empty state ── */
+.empty-state {
+  text-align: center;
+  padding: 2.5rem;
+  color: var(--text-3);
+  font-size: 14px;
+}
+
+/* ── Footer ── */
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0.8rem 1rem;
+  background: var(--surface-2);
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.print-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.print-btn:hover { background: var(--surface-2); border-color: var(--accent); color: var(--accent); }
+
+/* ── FABs ── */
+.fab-group {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 900;
+}
+
+.fab {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition);
+  opacity: 0;
+  transform: scale(0.7);
+  pointer-events: none;
+}
+
+.fab.visible {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.fab-top { background: var(--surface); color: var(--text); }
+.fab-top:hover { background: var(--accent); color: #fff; }
+.fab-print { background: var(--accent); color: #fff; opacity: 1; transform: scale(1); pointer-events: auto; }
+.fab-print:hover { background: var(--accent-dark); }
+
+/* ── Settings Panel ── */
+.settings-toggle {
+  position: fixed;
+  top: 12px;
+  left: 14px;
+  z-index: 1001;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  font-family: var(--font);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.settings-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+.settings-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 270px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 1.2rem;
+  z-index: 1002;
+  box-shadow: var(--shadow-lg);
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  overflow-y: auto;
+}
+
+.settings-panel.open { transform: translateX(0); }
+
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 1001;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.settings-overlay.open { opacity: 1; pointer-events: auto; }
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.settings-header h3 { font-size: 15px; font-weight: 700; }
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--text-3);
+  transition: color var(--transition);
+  line-height: 1;
+  padding: 4px;
+}
+.close-btn:hover { color: var(--accent); }
+
+.settings-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.theme-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 1.2rem;
+}
+
+.theme-btn {
+  padding: 8px 4px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--transition);
+}
+
+.theme-btn:hover { border-color: var(--accent); }
+.theme-btn.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+
+.size-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1.2rem;
+}
+
+.size-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--text-2);
+  font-size: 14px;
+  transition: all var(--transition);
+  font-family: var(--font);
+}
+.size-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.size-display {
+  flex: 1;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-2);
+}
+
+.reset-btn {
+  width: 100%;
+  padding: 9px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-top: 0.5rem;
+}
+.reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Print ── */
+@page { size: A4; margin: 15mm; }
+
+@media print {
+  #read-progress, .settings-toggle, .settings-panel, .settings-overlay,
+  .fab-group, .controls-bar, .table-footer .print-btn { display: none !important; }
+
+  body { background: #fff !important; color: #000 !important; }
+  .hero { background: #fff !important; border-bottom: 1px solid #ccc !important; }
+  .hero::before { display: none; }
+  .stat-card, .progress-card, .table-card, .callout { box-shadow: none !important; }
+  table { break-inside: avoid; }
+  tbody tr { break-inside: avoid; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .col-hide-mobile { display: none; }
+  .hero { padding: 2rem 1rem 1.8rem; }
+  .hero-meta { gap: 1rem; }
+  .fab-group { bottom: 1rem; left: 1rem; }
+}
+
+/* ── Dot separator ── */
+.hero-sep { width: 4px; height: 4px; border-radius: 50%; background: var(--border-strong); align-self: center; }
+</style>
+</head>
+<body>
+
+<div id="read-progress"><div id="read-progress-fill"></div></div>
+
+<button class="settings-toggle" onclick="toggleSettings()" aria-label="إعدادات القراءة">
+  ⚙ إعدادات
+</button>
+
+<div class="settings-overlay" id="settingsOverlay" onclick="closeSettings()"></div>
+
+<div class="settings-panel" id="settingsPanel">
+  <div class="settings-header">
+    <h3>إعدادات العرض</h3>
+    <button class="close-btn" onclick="closeSettings()">✕</button>
+  </div>
+
+  <span class="settings-label">المظهر</span>
+  <div class="theme-btns">
+    <button class="theme-btn" data-theme="light" onclick="setTheme('light')">☀ فاتح</button>
+    <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">🌙 داكن</button>
+    <button class="theme-btn" data-theme="sepia" onclick="setTheme('sepia')">📜 بيج</button>
+  </div>
+
+  <span class="settings-label">حجم الخط</span>
+  <div class="size-control">
+    <button class="size-btn" onclick="changeFontSize(-1)">−</button>
+    <span class="size-display" id="fontSizeDisplay">١٠٠٪</span>
+    <button class="size-btn" onclick="changeFontSize(1)">+</button>
+  </div>
+
+  <button class="reset-btn" onclick="resetSettings()">↺ إعادة الضبط</button>
+</div>
+
+<header class="hero">
+  <div class="hero-eyebrow">📋 جمعية ادخارية</div>
+  <h1>جدول سداد الجمعية</h1>
+  <p class="hero-sub">قسط شهري ثابت · 20 شهراً · بداية 27 يوليو 2025</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-val">1,250</span>
+      <span class="hero-meta-lbl">القسط الشهري (ر.س)</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-val">20</span>
+      <span class="hero-meta-lbl">عدد الأقساط</span>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-val">25,000</span>
+      <span class="hero-meta-lbl">إجمالي المبلغ (ر.س)</span>
+    </div>
+  </div>
+</header>
+
+<main class="page-wrapper">
+
+  <div class="callout" id="receivedCallout">
+    <span class="callout-icon">🏆</span>
+    <div>
+      <strong>استُلمت الجمعية بتاريخ تقريبي 26 فبراير 2026</strong><br>
+      تم استلام مبلغ الجمعية الإجمالي بما يوافق دور شهر فبراير ٢٠٢٦ — جاري استكمال سداد الأقساط المتبقية.
+    </div>
+  </div>
+
+  <div class="stats-grid" id="statsGrid"></div>
+
+  <div class="progress-card">
+    <div class="progress-header">
+      <span class="progress-label">📊 نسبة الإنجاز الكلية</span>
+      <span class="progress-pct" id="progressPct">٠٪</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="progress-segments">
+      <span class="progress-seg"><span class="dot dot-paid"></span> مدفوع</span>
+      <span class="progress-seg"><span class="dot dot-received"></span> شهر الاستلام</span>
+      <span class="progress-seg"><span class="dot dot-pending"></span> قيد الانتظار</span>
+    </div>
+  </div>
+
+  <div class="controls-bar">
+    <input type="text" class="search-box" id="searchInput" placeholder="ابحث بالشهر أو الرقم..." aria-label="بحث" />
+    <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">الكل</button>
+    <button class="filter-btn" data-filter="paid" onclick="setFilter('paid', this)">✅ مدفوع</button>
+    <button class="filter-btn" data-filter="received" onclick="setFilter('received', this)">🏆 استُلمت</button>
+    <button class="filter-btn" data-filter="pending" onclick="setFilter('pending', this)">⏳ قيد الانتظار</button>
+  </div>
+
+  <div class="table-card">
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:46px">#</th>
+            <th>الشهر</th>
+            <th class="col-hide-mobile">تاريخ الاستحقاق</th>
+            <th class="col-hide-mobile">تاريخ السداد الفعلي</th>
+            <th>القسط</th>
+            <th class="col-hide-mobile">التراكمي</th>
+            <th>الحالة</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div class="empty-state" id="emptyState" style="display:none">لا توجد نتائج مطابقة للبحث</div>
+    </div>
+    <div class="table-footer">
+      <span id="footerNote">انقر على الحالة لتبديلها</span>
+      <button class="print-btn" onclick="window.print()">🖨 طباعة الجدول</button>
+    </div>
+  </div>
+
+</main>
+
+<div class="fab-group">
+  <button class="fab fab-top" id="fabTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="العودة للأعلى">↑</button>
+  <button class="fab fab-print" onclick="window.print()" title="طباعة">🖨</button>
+</div>
+
+<script>
+// ── Data ──
+const MONTHLY = 1250;
+const TOTAL_MONTHS = 20;
+const START = new Date(2025, 6, 27); // 27 July 2025
+const STORAGE_KEY = 'jamiya_v3_paid';
+const RECEIVED_MONTH = 6; // index 6 = Feb 2026
+const RECEIVED_DATE = '26 فبراير 2026';
+
+const AR_MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+function toArabicNums(n) {
+  return String(n);
+}
+
+function formatAR(n) {
+  return n.toLocaleString('en');
+}
+
+function getMonthData(i) {
+  const due = new Date(START.getFullYear(), START.getMonth() + i, START.getDate());
+  const m = due.getMonth();
+  const y = due.getFullYear();
+  const label = AR_MONTHS[m] + ' ' + toArabicNums(y);
+  const dueStr = toArabicNums(due.getDate()) + ' ' + AR_MONTHS[m] + ' ' + toArabicNums(y);
+  return { label, dueStr, month: m, year: y };
+}
+
+// ── State ──
+let paidSet = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'));
+let filter = 'all';
+let searchQ = '';
+let theme = localStorage.getItem('jamiya_theme') || 'light';
+let fontSize = parseInt(localStorage.getItem('jamiya_fs') || '16');
+
+function savePaid() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...paidSet]));
+}
+
+// ── Theme ──
+function applyTheme(t) {
+  theme = t;
+  if (t === 'light') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('jamiya_theme', t);
+  document.querySelectorAll('.theme-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.theme === t);
+  });
+}
+
+function setTheme(t) { applyTheme(t); }
+
+function changeFontSize(dir) {
+  fontSize = Math.max(13, Math.min(22, fontSize + dir));
+  applyFontSize();
+}
+
+function applyFontSize() {
+  document.documentElement.style.fontSize = fontSize + 'px';
+  document.getElementById('fontSizeDisplay').textContent = Math.round((fontSize/16)*100) + '%';
+  localStorage.setItem('jamiya_fs', fontSize);
+}
+
+function resetSettings() {
+  theme = 'light'; fontSize = 16;
+  applyTheme('light'); applyFontSize();
+}
+
+// ── Settings panel ──
+function toggleSettings() {
+  const p = document.getElementById('settingsPanel');
+  const o = document.getElementById('settingsOverlay');
+  const open = p.classList.contains('open');
+  p.classList.toggle('open', !open);
+  o.classList.toggle('open', !open);
+}
+
+function closeSettings() {
+  document.getElementById('settingsPanel').classList.remove('open');
+  document.getElementById('settingsOverlay').classList.remove('open');
+}
+
+// ── Filter ──
+function setFilter(f, btn) {
+  filter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+// ── Toggle paid ──
+function togglePaid(i) {
+  if (paidSet.has(i)) paidSet.delete(i); else paidSet.add(i);
+  savePaid();
+  render();
+}
+
+// ── Stats ──
+function updateStats() {
+  const paidCount = paidSet.size;
+  const paidAmt = paidCount * MONTHLY;
+  const remaining = (TOTAL_MONTHS - paidCount) * MONTHLY;
+  const pct = Math.round((paidCount / TOTAL_MONTHS) * 100);
+
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+
+  document.getElementById('statsGrid').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-val">${formatAR(MONTHLY)}</div>
+      <div class="stat-lbl">القسط الشهري (ر.س)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">${toArabicNums(paidCount)} / ${toArabicNums(TOTAL_MONTHS)}</div>
+      <div class="stat-lbl">الأقساط المسددة</div>
+    </div>
+    <div class="stat-card accent-card">
+      <div class="stat-val">${formatAR(remaining)}</div>
+      <div class="stat-lbl">المتبقي للسداد (ر.س)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">${formatAR(paidAmt)}</div>
+      <div class="stat-lbl">المبلغ المسدد (ر.س)</div>
+    </div>
+  `;
+}
+
+// ── Render table ──
+function render() {
+  updateStats();
+
+  const rows = [];
+  for (let i = 0; i < TOTAL_MONTHS; i++) {
+    const d = getMonthData(i);
+    const isPaid = paidSet.has(i);
+    const isReceived = (i === RECEIVED_MONTH);
+    rows.push({ i, ...d, isPaid, isReceived });
+  }
+
+  const filtered = rows.filter(r => {
+    const fMatch =
+      filter === 'all' ||
+      (filter === 'paid' && r.isPaid && !r.isReceived) ||
+      (filter === 'received' && r.isReceived) ||
+      (filter === 'pending' && !r.isPaid && !r.isReceived);
+    const sMatch = !searchQ ||
+      r.label.includes(searchQ) ||
+      toArabicNums(r.i + 1).includes(searchQ) ||
+      String(r.i + 1).includes(searchQ);
+    return fMatch && sMatch;
+  });
+
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyState');
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+
+  empty.style.display = 'none';
+
+  tbody.innerHTML = filtered.map(r => {
+    const cum = (r.i + 1) * MONTHLY;
+
+    // Determine badge
+    let badge, rowClass = '';
+    if (r.isReceived) {
+      badge = `<button class="badge badge-received" onclick="togglePaid(${r.i})" title="شهر الاستلام — انقر لتبديل">🏆 استُلمت الجمعية</button>`;
+      rowClass = 'row-received';
+    } else if (r.isPaid) {
+      badge = `<button class="badge badge-paid" onclick="togglePaid(${r.i})" title="مدفوع — انقر لإلغاء">✅ مدفوع</button>`;
+    } else {
+      badge = `<button class="badge badge-pending" onclick="togglePaid(${r.i})" title="انقر لتأكيد السداد">⏳ قيد الانتظار</button>`;
+    }
+
+    // Actual payment date (only if paid or received)
+    let actualDate = '—';
+    if (r.isReceived) {
+      actualDate = `<span style="color:var(--gold);font-weight:600">${RECEIVED_DATE}</span>`;
+    } else if (r.isPaid) {
+      // Approximate paid date near due
+      const paidD = new Date(START.getFullYear(), START.getMonth() + r.i, START.getDate() + 2);
+      actualDate = `<span style="color:var(--green)">${toArabicNums(paidD.getDate())} ${AR_MONTHS[paidD.getMonth()]} ${toArabicNums(paidD.getFullYear())}</span>`;
+    }
+
+    // --- التعديلات المخصصة لتواريخ الاستحقاق والسداد الفعلي ---
+    if (r.i === 0 || r.i === 1) { // القسط الأول والثاني
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">30 أغسطس 2025</span>`;
+    } else if (r.i === 2) { // القسط الثالث
+      r.dueStr = '28 سبتمبر 2025';
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">2 أكتوبر 2025</span>`;
+    } else if (r.i === 3) { // القسط الرابع
+      r.dueStr = '28 أكتوبر 2025';
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">30 أكتوبر 2025</span>`;
+    } else if (r.i === 4) { // القسط الخامس
+      r.dueStr = '27 نوفمبر 2025';
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">26 نوفمبر 2025</span>`;
+    } else if (r.i === 5) { // القسط السادس
+      r.dueStr = '28 ديسمبر 2025';
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">31 ديسمبر 2025</span>`;
+    } else if (r.i === 6) { // القسط السابع
+      r.dueStr = '27 يناير 2026';
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">28 يناير 2026</span>`;
+    } else if (r.i === 7) { // القسط الثامن
+      r.dueStr = '27 فبراير 2026';
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">13 مارس 2026</span>`;
+    } else if (r.i === 8) { // القسط التاسع
+      r.dueStr = '26 مارس 2026';
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">26 مارس 2026</span>`;
+    } else if (r.i === 9) { // القسط العاشر
+      r.dueStr = '27 أبريل 2026';
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">1 مايو 2026</span>`;
+    } else if (r.i === 10) { // القسط الحادي عشر
+      r.dueStr = '24 مايو 2026';
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">24 مايو 2026</span>`;
+    } else if (r.i === 11) { // القسط الثاني عشر
+      r.dueStr = '28 يونيو 2026';
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">29 يونيو 2026</span>`;
+    }
+    // --------------------------------------------------------
+
+    const receivedNote = r.isReceived
+      ? `<div class="received-row-indicator">🏆 استلام مبلغ الجمعية ≈ ${RECEIVED_DATE}</div>`
+      : '';
+
+    return `
+      <tr class="${rowClass}">
+        <td><span class="row-num">${toArabicNums(r.i + 1)}</span></td>
+        <td>
+          <div class="month-cell">
+            ${r.label}
+            <small>قسط ${toArabicNums(r.i + 1)} من ${toArabicNums(TOTAL_MONTHS)}</small>
+          </div>
+          ${receivedNote}
+        </td>
+        <td class="date-cell col-hide-mobile">${r.dueStr}</td>
+        <td class="date-cell col-hide-mobile">${actualDate}</td>
+        <td class="amount-cell"><span style="font-size:11px;color:var(--text-3)">ر.س </span>${formatAR(MONTHLY)}</td>
+        <td class="cum-cell col-hide-mobile">${formatAR(cum)} ر.س</td>
+        <td>${badge}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ── Scroll events ──
+window.addEventListener('scroll', () => {
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+  document.getElementById('read-progress-fill').style.width = pct + '%';
+
+  const fab = document.getElementById('fabTop');
+  if (window.scrollY > 300) fab.classList.add('visible');
+  else fab.classList.remove('visible');
+});
+
+// ── Search ──
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQ = e.target.value.trim();
+  render();
+});
+
+// ── Init ──
+applyTheme(theme);
+applyFontSize();
+render();
+
+// Pre-mark some months as paid for demo realism
+// Mark months 0-11 as paid (July 2025 – June 2026)
+[0,1,2,3,4,5,6,7,8,9,10,11].forEach(i => paidSet.add(i));
+savePaid();
+render();
+</script>
+</body>
+</html>
