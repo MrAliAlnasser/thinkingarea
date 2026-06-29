@@ -404,14 +404,11 @@ tbody tr {
 tbody tr:last-child { border-bottom: none; }
 tbody tr:hover { background: var(--surface-2); }
 
-tbody tr.row-received { background: rgba(196,154,42,0.06); }
-tbody tr.row-received:hover { background: rgba(196,154,42,0.1); }
-
 tbody td {
   padding: 12px 14px;
   vertical-align: middle;
   color: var(--text);
-  white-space: nowrap; /* Prevents text from breaking onto new lines awkwardly */
+  white-space: nowrap; 
 }
 
 /* ── Specific Cells ── */
@@ -460,12 +457,6 @@ tbody td {
   background: var(--green-light);
   color: var(--green-dark);
   border-color: rgba(45,122,74,0.2);
-}
-
-.badge-received {
-  background: var(--gold-light);
-  color: var(--accent-dark);
-  border-color: rgba(196,154,42,0.25);
 }
 
 .badge-pending {
@@ -649,18 +640,16 @@ tbody td {
 .reset-btn { width: 100%; padding: 9px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-2); color: var(--text-2); font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all var(--transition); margin-top: 0.5rem; }
 .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-/* ── Refined Responsive for Mobile (Horizontal Scrolling Fix) ── */
+/* ── Refined Responsive for Mobile ── */
 @media (max-width: 640px) {
   .hero { padding: 2rem 1rem 1.8rem; }
   .page-wrapper { padding: 1.5rem 1rem 3rem; }
   
-  /* Filter UI adjustments */
   .controls-bar { flex-direction: column; align-items: stretch; gap: 10px; }
   .search-box { width: 100%; margin-bottom: 4px; }
   .filters-group { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
   .filter-btn { flex: 1; min-width: 45%; text-align: center; justify-content: center; }
 
-  /* Ensure scroll hint */
   .table-scroll { 
     box-shadow: inset -10px 0 10px -10px rgba(0,0,0,0.1), inset 10px 0 10px -10px rgba(0,0,0,0.1); 
   }
@@ -811,7 +800,7 @@ const MONTHLY = 1250;
 const TOTAL_MONTHS = 20;
 const START = new Date(2025, 6, 27); // 27 July 2025
 const STORAGE_KEY = 'jamiya_v3_paid';
-const RECEIVED_MONTH = 6; // index 6 = Feb 2026
+const RECEIVED_MONTH = 6; // index 6 (القسط السابع)
 const RECEIVED_DATE = '26 فبراير 2026';
 
 const AR_MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
@@ -971,22 +960,23 @@ function render() {
   tbody.innerHTML = filtered.map(r => {
     const cum = (r.i + 1) * MONTHLY;
 
-    // Determine badge
     let badge, rowClass = '';
-    if (r.isReceived) {
-      badge = `<button class="badge badge-received" onclick="togglePaid(${r.i})" title="شهر الاستلام — انقر لتبديل">🏆 استُلمت الجمعية</button>`;
-      rowClass = 'row-received';
-    } else if (r.isPaid) {
-      badge = `<button class="badge badge-paid" onclick="togglePaid(${r.i})" title="مدفوع — انقر لإلغاء">✅ مدفوع</button>`;
+    
+    // --- منطق الحالة (Badge) المعدل ليوافق طلبك ---
+    if (r.isPaid) {
+      if (r.isReceived) {
+        // حالة القسط رقم 7 (استُلمت الجمعيّة ولكن بنفس تنسيق مدفوع الأخضر)
+        badge = `<button class="badge badge-paid" onclick="togglePaid(${r.i})" title="انقر لتعديل الحالة">✅ استُلمت الجمعيّة</button>`;
+      } else {
+        badge = `<button class="badge badge-paid" onclick="togglePaid(${r.i})" title="مدفوع — انقر لإلغاء">✅ مدفوع</button>`;
+      }
     } else {
       badge = `<button class="badge badge-pending" onclick="togglePaid(${r.i})" title="انقر لتأكيد السداد">⏳ قيد الانتظار</button>`;
     }
 
     // Actual payment date
     let actualDate = '—';
-    if (r.isReceived) {
-      actualDate = `<span style="color:var(--gold);font-weight:600">${RECEIVED_DATE}</span>`;
-    } else if (r.isPaid) {
+    if (r.isPaid && !r.isReceived) {
       const paidD = new Date(START.getFullYear(), START.getMonth() + r.i, START.getDate() + 2);
       actualDate = `<span style="color:var(--green)">${toArabicNums(paidD.getDate())} ${AR_MONTHS[paidD.getMonth()]} ${toArabicNums(paidD.getFullYear())}</span>`;
     }
@@ -1007,8 +997,9 @@ function render() {
       r.dueStr = '28 ديسمبر 2025';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">31 ديسمبر 2025</span>`;
     } else if (r.i === 6) { 
+      // القسط رقم 7 - تاريخ السداد الفعلي ثابت
       r.dueStr = '27 يناير 2026';
-      if (r.isPaid) actualDate = `<span style="color:var(--green)">28 يناير 2026</span>`;
+      if (r.isPaid) actualDate = `<span style="color:var(--green)">26 فبراير 2026</span>`;
     } else if (r.i === 7) { 
       r.dueStr = '27 فبراير 2026';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">13 مارس 2026</span>`;
@@ -1027,8 +1018,9 @@ function render() {
     }
     // ---------------------------------------
 
+    // --- تغيير نص المؤشر الخاص بالقسط 7 ---
     const receivedNote = r.isReceived
-      ? `<div class="received-row-indicator">🏆 استلام مبلغ الجمعية ≈ ${RECEIVED_DATE}</div>`
+      ? `<div class="received-row-indicator">🏆 مبلغ الجمعية 23,750 ر.س</div>`
       : '';
 
     return `
@@ -1073,7 +1065,7 @@ applyTheme(theme);
 applyFontSize();
 render();
 
-// Pre-mark some months as paid for demo realism
+// القسط 7 (index 6) مضاف هنا افتراضياً ضمن الأقساط المسددة
 [0,1,2,3,4,5,6,7,8,9,10,11].forEach(i => paidSet.add(i));
 savePaid();
 render();
