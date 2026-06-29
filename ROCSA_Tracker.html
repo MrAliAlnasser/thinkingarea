@@ -38,7 +38,7 @@
   --font-size-lg: clamp(16px, 2.5vw, 19px);
   --font-size-xl: clamp(22px, 4vw, 32px);
   --font-size-xxl: clamp(28px, 6vw, 48px);
-  --max-w: 900px;
+  --max-w: 960px;
   --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
 }
 
@@ -195,29 +195,10 @@ body {
   padding: 2rem 1.25rem 4rem;
 }
 
-/* ── Section title ── */
-.section-title {
-  font-size: clamp(15px, 2.5vw, 18px);
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.section-title::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-  margin-right: 6px;
-}
-
 /* ── Stat Cards ── */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
   margin-bottom: 2rem;
 }
@@ -257,12 +238,6 @@ body {
   color: var(--text-3);
   font-weight: 500;
   margin-top: 4px;
-}
-
-.stat-sub {
-  font-size: 11px;
-  color: var(--text-3);
-  margin-top: 2px;
 }
 
 /* ── Progress ── */
@@ -355,6 +330,12 @@ body {
   box-shadow: 0 0 0 3px rgba(184,92,56,0.12);
 }
 
+.filters-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .filter-btn {
   padding: 8px 14px;
   border-radius: var(--radius-sm);
@@ -378,7 +359,7 @@ body {
   box-shadow: 0 2px 8px rgba(184,92,56,0.28);
 }
 
-/* ── Table ── */
+/* ── Table (Scrollable Native) ── */
 .table-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -388,13 +369,16 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.table-scroll { overflow-x: auto; }
+.table-scroll { 
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch;
+}
 
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13.5px;
-  min-width: 560px;
+  min-width: 780px; /* Forces horizontal scroll on mobile for clarity */
 }
 
 thead {
@@ -413,13 +397,6 @@ thead th {
   white-space: nowrap;
 }
 
-thead th.sortable {
-  cursor: pointer;
-  user-select: none;
-  transition: color var(--transition);
-}
-thead th.sortable:hover { color: var(--accent); }
-
 tbody tr {
   border-bottom: 1px solid var(--border);
   transition: background var(--transition);
@@ -434,9 +411,10 @@ tbody td {
   padding: 12px 14px;
   vertical-align: middle;
   color: var(--text);
+  white-space: nowrap; /* Prevents text from breaking onto new lines awkwardly */
 }
 
-/* ── Row Number ── */
+/* ── Specific Cells ── */
 .row-num {
   display: inline-flex;
   align-items: center;
@@ -452,25 +430,13 @@ tbody td {
   font-feature-settings: "tnum";
 }
 
-/* ── Month cell ── */
 .month-cell { font-weight: 600; color: var(--text); }
 .month-cell small { display: block; font-size: 11px; color: var(--text-3); font-weight: 400; margin-top: 1px; }
 
-/* ── Date cell ── */
 .date-cell { font-size: 12.5px; color: var(--text-2); font-feature-settings: "tnum"; }
 
-/* ── Amount ── */
-.amount-cell {
-  font-weight: 700;
-  font-feature-settings: "tnum";
-  font-size: 14px;
-}
-
-.cum-cell {
-  font-size: 12px;
-  color: var(--text-3);
-  font-feature-settings: "tnum";
-}
+.amount-cell { font-weight: 700; font-feature-settings: "tnum"; font-size: 14px; }
+.cum-cell { font-size: 12px; color: var(--text-3); font-feature-settings: "tnum"; }
 
 /* ── Status Badge ── */
 .badge {
@@ -508,7 +474,7 @@ tbody td {
   border-color: rgba(160,98,12,0.15);
 }
 
-/* ── Received Callout ── */
+/* ── Callouts ── */
 .received-row-indicator {
   display: flex;
   align-items: center;
@@ -524,7 +490,6 @@ tbody td {
   width: fit-content;
 }
 
-/* ── Callout Banner ── */
 .callout {
   display: flex;
   align-items: flex-start;
@@ -542,13 +507,7 @@ tbody td {
 .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
 .callout strong { color: var(--text); }
 
-/* ── Empty state ── */
-.empty-state {
-  text-align: center;
-  padding: 2.5rem;
-  color: var(--text-3);
-  font-size: 14px;
-}
+.empty-state { text-align: center; padding: 2.5rem; color: var(--text-3); font-size: 14px; }
 
 /* ── Footer ── */
 .table-footer {
@@ -610,12 +569,7 @@ tbody td {
   pointer-events: none;
 }
 
-.fab.visible {
-  opacity: 1;
-  transform: scale(1);
-  pointer-events: auto;
-}
-
+.fab.visible { opacity: 1; transform: scale(1); pointer-events: auto; }
 .fab-top { background: var(--surface); color: var(--text); }
 .fab-top:hover { background: var(--accent); color: #fff; }
 .fab-print { background: var(--accent); color: #fff; opacity: 1; transform: scale(1); pointer-events: auto; }
@@ -674,109 +628,43 @@ tbody td {
 }
 .settings-overlay.open { opacity: 1; pointer-events: auto; }
 
-.settings-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-}
-
+.settings-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
 .settings-header h3 { font-size: 15px; font-weight: 700; }
 
-.close-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  color: var(--text-3);
-  transition: color var(--transition);
-  line-height: 1;
-  padding: 4px;
-}
+.close-btn { background: none; border: none; cursor: pointer; font-size: 20px; color: var(--text-3); transition: color var(--transition); line-height: 1; padding: 4px; }
 .close-btn:hover { color: var(--accent); }
 
-.settings-label {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-3);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 8px;
-  display: block;
-}
+.settings-label { font-size: 11px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; display: block; }
 
-.theme-btns {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 6px;
-  margin-bottom: 1.2rem;
-}
-
-.theme-btn {
-  padding: 8px 4px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--surface-2);
-  color: var(--text-2);
-  font-family: var(--font);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  text-align: center;
-  transition: all var(--transition);
-}
-
+.theme-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 1.2rem; }
+.theme-btn { padding: 8px 4px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-2); color: var(--text-2); font-family: var(--font); font-size: 12px; font-weight: 600; cursor: pointer; text-align: center; transition: all var(--transition); }
 .theme-btn:hover { border-color: var(--accent); }
 .theme-btn.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
 
-.size-control {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 1.2rem;
-}
-
-.size-btn {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  width: 34px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-weight: 700;
-  color: var(--text-2);
-  font-size: 14px;
-  transition: all var(--transition);
-  font-family: var(--font);
-}
+.size-control { display: flex; align-items: center; gap: 10px; margin-bottom: 1.2rem; }
+.size-btn { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm); width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; color: var(--text-2); font-size: 14px; transition: all var(--transition); font-family: var(--font); }
 .size-btn:hover { border-color: var(--accent); color: var(--accent); }
+.size-display { flex: 1; text-align: center; font-size: 12.5px; font-weight: 600; color: var(--text-2); }
 
-.size-display {
-  flex: 1;
-  text-align: center;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--text-2);
-}
-
-.reset-btn {
-  width: 100%;
-  padding: 9px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--surface-2);
-  color: var(--text-2);
-  font-family: var(--font);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition);
-  margin-top: 0.5rem;
-}
+.reset-btn { width: 100%; padding: 9px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-2); color: var(--text-2); font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all var(--transition); margin-top: 0.5rem; }
 .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Refined Responsive for Mobile (Horizontal Scrolling Fix) ── */
+@media (max-width: 640px) {
+  .hero { padding: 2rem 1rem 1.8rem; }
+  .page-wrapper { padding: 1.5rem 1rem 3rem; }
+  
+  /* Filter UI adjustments */
+  .controls-bar { flex-direction: column; align-items: stretch; gap: 10px; }
+  .search-box { width: 100%; margin-bottom: 4px; }
+  .filters-group { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; }
+  .filter-btn { flex: 1; min-width: 45%; text-align: center; justify-content: center; }
+
+  /* Ensure scroll hint */
+  .table-scroll { 
+    box-shadow: inset -10px 0 10px -10px rgba(0,0,0,0.1), inset 10px 0 10px -10px rgba(0,0,0,0.1); 
+  }
+}
 
 /* ── Print ── */
 @page { size: A4; margin: 15mm; }
@@ -789,20 +677,9 @@ tbody td {
   .hero { background: #fff !important; border-bottom: 1px solid #ccc !important; }
   .hero::before { display: none; }
   .stat-card, .progress-card, .table-card, .callout { box-shadow: none !important; }
-  table { break-inside: avoid; }
-  tbody tr { break-inside: avoid; }
+  table { break-inside: auto; width: 100% !important; min-width: unset !important; }
+  tr { break-inside: avoid; page-break-inside: avoid; }
 }
-
-/* ── Responsive ── */
-@media (max-width: 640px) {
-  .col-hide-mobile { display: none; }
-  .hero { padding: 2rem 1rem 1.8rem; }
-  .hero-meta { gap: 1rem; }
-  .fab-group { bottom: 1rem; left: 1rem; }
-}
-
-/* ── Dot separator ── */
-.hero-sep { width: 4px; height: 4px; border-radius: 50%; background: var(--border-strong); align-self: center; }
 </style>
 </head>
 <body>
@@ -889,10 +766,12 @@ tbody td {
 
   <div class="controls-bar">
     <input type="text" class="search-box" id="searchInput" placeholder="ابحث بالشهر أو الرقم..." aria-label="بحث" />
-    <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">الكل</button>
-    <button class="filter-btn" data-filter="paid" onclick="setFilter('paid', this)">✅ مدفوع</button>
-    <button class="filter-btn" data-filter="received" onclick="setFilter('received', this)">🏆 استُلمت</button>
-    <button class="filter-btn" data-filter="pending" onclick="setFilter('pending', this)">⏳ قيد الانتظار</button>
+    <div class="filters-group">
+      <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">الكل</button>
+      <button class="filter-btn" data-filter="paid" onclick="setFilter('paid', this)">✅ مدفوع</button>
+      <button class="filter-btn" data-filter="received" onclick="setFilter('received', this)">🏆 استُلمت</button>
+      <button class="filter-btn" data-filter="pending" onclick="setFilter('pending', this)">⏳ قيد الانتظار</button>
+    </div>
   </div>
 
   <div class="table-card">
@@ -902,10 +781,10 @@ tbody td {
           <tr>
             <th style="width:46px">#</th>
             <th>الشهر</th>
-            <th class="col-hide-mobile">تاريخ الاستحقاق</th>
-            <th class="col-hide-mobile">تاريخ السداد الفعلي</th>
+            <th>تاريخ الاستحقاق</th>
+            <th>تاريخ السداد الفعلي</th>
             <th>القسط</th>
-            <th class="col-hide-mobile">التراكمي</th>
+            <th>التراكمي</th>
             <th>الحالة</th>
           </tr>
         </thead>
@@ -1103,51 +982,50 @@ function render() {
       badge = `<button class="badge badge-pending" onclick="togglePaid(${r.i})" title="انقر لتأكيد السداد">⏳ قيد الانتظار</button>`;
     }
 
-    // Actual payment date (only if paid or received)
+    // Actual payment date
     let actualDate = '—';
     if (r.isReceived) {
       actualDate = `<span style="color:var(--gold);font-weight:600">${RECEIVED_DATE}</span>`;
     } else if (r.isPaid) {
-      // Approximate paid date near due
       const paidD = new Date(START.getFullYear(), START.getMonth() + r.i, START.getDate() + 2);
       actualDate = `<span style="color:var(--green)">${toArabicNums(paidD.getDate())} ${AR_MONTHS[paidD.getMonth()]} ${toArabicNums(paidD.getFullYear())}</span>`;
     }
 
-    // --- التعديلات المخصصة لتواريخ الاستحقاق والسداد الفعلي ---
-    if (r.i === 0 || r.i === 1) { // القسط الأول والثاني
+    // --- تواريخ الاستحقاق والسداد المخصصة ---
+    if (r.i === 0 || r.i === 1) { 
       if (r.isPaid) actualDate = `<span style="color:var(--green)">30 أغسطس 2025</span>`;
-    } else if (r.i === 2) { // القسط الثالث
+    } else if (r.i === 2) { 
       r.dueStr = '28 سبتمبر 2025';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">2 أكتوبر 2025</span>`;
-    } else if (r.i === 3) { // القسط الرابع
+    } else if (r.i === 3) { 
       r.dueStr = '28 أكتوبر 2025';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">30 أكتوبر 2025</span>`;
-    } else if (r.i === 4) { // القسط الخامس
+    } else if (r.i === 4) { 
       r.dueStr = '27 نوفمبر 2025';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">26 نوفمبر 2025</span>`;
-    } else if (r.i === 5) { // القسط السادس
+    } else if (r.i === 5) { 
       r.dueStr = '28 ديسمبر 2025';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">31 ديسمبر 2025</span>`;
-    } else if (r.i === 6) { // القسط السابع
+    } else if (r.i === 6) { 
       r.dueStr = '27 يناير 2026';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">28 يناير 2026</span>`;
-    } else if (r.i === 7) { // القسط الثامن
+    } else if (r.i === 7) { 
       r.dueStr = '27 فبراير 2026';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">13 مارس 2026</span>`;
-    } else if (r.i === 8) { // القسط التاسع
+    } else if (r.i === 8) { 
       r.dueStr = '26 مارس 2026';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">26 مارس 2026</span>`;
-    } else if (r.i === 9) { // القسط العاشر
+    } else if (r.i === 9) { 
       r.dueStr = '27 أبريل 2026';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">1 مايو 2026</span>`;
-    } else if (r.i === 10) { // القسط الحادي عشر
+    } else if (r.i === 10) { 
       r.dueStr = '24 مايو 2026';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">24 مايو 2026</span>`;
-    } else if (r.i === 11) { // القسط الثاني عشر
+    } else if (r.i === 11) { 
       r.dueStr = '28 يونيو 2026';
       if (r.isPaid) actualDate = `<span style="color:var(--green)">29 يونيو 2026</span>`;
     }
-    // --------------------------------------------------------
+    // ---------------------------------------
 
     const receivedNote = r.isReceived
       ? `<div class="received-row-indicator">🏆 استلام مبلغ الجمعية ≈ ${RECEIVED_DATE}</div>`
@@ -1163,10 +1041,10 @@ function render() {
           </div>
           ${receivedNote}
         </td>
-        <td class="date-cell col-hide-mobile">${r.dueStr}</td>
-        <td class="date-cell col-hide-mobile">${actualDate}</td>
+        <td class="date-cell">${r.dueStr}</td>
+        <td class="date-cell">${actualDate}</td>
         <td class="amount-cell"><span style="font-size:11px;color:var(--text-3)">ر.س </span>${formatAR(MONTHLY)}</td>
-        <td class="cum-cell col-hide-mobile">${formatAR(cum)} ر.س</td>
+        <td class="cum-cell">${formatAR(cum)} ر.س</td>
         <td>${badge}</td>
       </tr>
     `;
@@ -1196,7 +1074,6 @@ applyFontSize();
 render();
 
 // Pre-mark some months as paid for demo realism
-// Mark months 0-11 as paid (July 2025 – June 2026)
 [0,1,2,3,4,5,6,7,8,9,10,11].forEach(i => paidSet.add(i));
 savePaid();
 render();
