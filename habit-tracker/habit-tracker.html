@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="sepia">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متابعة العادات الأسبوعيّة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* نظام الألوان الفاتح (الافتراضي) */
+            --bg-color: #fcfcfc;
+            --surface-color: #ffffff;
+            --text-color: #212529;
+            --text-light: #6c757d;
+            --primary-color: #0d6efd;
+            --border-color: #dee2e6;
+            --success-color: #198754;
+            --warning-color: #ffc107;
+            --error-color: #dc3545;
+            
+            /* أبعاد وخطوط */
+            --font-size-base: clamp(13px, 1.1vw, 15px);
+            --line-height: 1.85;
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        /* نظام الألوان الداكن */
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --text-light: #9e9e9e;
+            --primary-color: #6ea8fe;
+            --border-color: #333333;
+        }
+
+        /* وضع القراءة (الداكن الدافئ) */
+        [data-theme="sepia"] {
+            --bg-color: #f4ecd8;
+            --surface-color: #e8dcb8;
+            --text-color: #5b4636;
+            --text-light: #7a6a58;
+            --primary-color: #8c3a00;
+            --border-color: #d8c39b;
+        }
+
+        /* إعادة ضبط وتجهيز */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height);
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        /* شريط التقدم للقراءة */
+        #reading-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background-color: var(--primary-color);
+            z-index: 1000;
+            transition: width 0.1s ease;
+        }
+
+        /* تخطيط الصفحة - Mobile First */
+        .layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        main.content {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header.main-header {
+            text-align: center;
+            padding: 3rem 1rem;
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        h1 { font-size: clamp(24px, 4vw, 36px); margin-bottom: 0.5rem; }
+        h2 { 
+            font-size: clamp(20px, 3vw, 28px); 
+            margin-top: 2.5rem; 
+            border-bottom: 2px solid var(--border-color); 
+            padding-bottom: 0.5rem; 
+        }
+        h3 { font-size: clamp(18px, 2.5vw, 22px); }
+
+        p { margin-bottom: 1.2rem; }
+
+        .meta {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        /* التنسيقات الدلالية (Tooltips, Badges, Callouts, Quotes) */
+        .tooltip {
+            border-bottom: 1px dotted var(--text-color);
+            position: relative;
+            cursor: help;
+        }
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-color);
+            color: var(--bg-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            margin-bottom: 5px;
+            z-index: 10;
+        }
+        .tooltip:hover::after, .tooltip:active::after { opacity: 1; }
+
+        .callout {
+            padding: 1rem 1.2rem;
+            border-radius: var(--border-radius);
+            background-color: var(--surface-color);
+            border-right: 4px solid var(--primary-color);
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .callout-success { border-color: var(--success-color); }
+        .callout-warning { border-color: var(--warning-color); }
+
+        .badge {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8em;
+            display: inline-block;
+        }
+
+        blockquote {
+            border-right: 4px solid var(--primary-color);
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem 0;
+            background-color: var(--surface-color);
+            font-style: italic;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* جدول تتبع العادات */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 1.5rem 0;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+        }
+        
+        .habit-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+            background: var(--surface-color);
+        }
+        
+        .habit-table th, .habit-table td {
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+        
+        .habit-table th {
+            background-color: rgba(0, 0, 0, 0.03);
+            font-weight: 700;
+        }
+        [data-theme="dark"] .habit-table th { background-color: rgba(255, 255, 255, 0.05); }
+        
+        .habit-table td:first-child {
+            text-align: right;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+            transition: transform 0.2s;
+        }
+        input[type="checkbox"]:hover { transform: scale(1.1); }
+
+        /* البطاقات والمقارنة */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .card {
+            background-color: var(--surface-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            border-top: 4px solid transparent;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .card-positive { border-top-color: var(--success-color); }
+        .card-negative { border-top-color: var(--error-color); }
+        .verdict-box {
+            background-color: var(--surface-color);
+            padding: 1.2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            border: 1px dashed var(--primary-color);
+            margin-top: 1rem;
+            font-weight: 700;
+        }
+
+        /* شريط التقدم / النسبة */
+        .score-card {
+            background: var(--surface-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .score-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .progress-bar-bg {
+            background: var(--border-color);
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            background: var(--success-color);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+
+        /* الأزرار العائمة (FABs) */
+        .fab-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 999;
+        }
+        @media (max-width: 767px) {
+            .fab-container { right: 1rem; bottom: 1rem; }
+        }
+        .fab {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background-color: var(--primary-color);
+            color: #fff;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fab:hover { transform: scale(1.1); }
+        
+        #back-to-top {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+        }
+        #back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+        }
+
+
+        /* Media Queries للمقاسات المختلفة */
+        @media (min-width: 768px) {
+            .comparison-grid { grid-template-columns: 1fr 1fr; }
+            .layout { padding: 2rem; }
+        }
+
+        /* إعدادات الطباعة */
+        @media print {
+            @page { size: A4; margin: 15mm; }
+            body {
+                background: transparent !important;
+                color: #000 !important;
+                font-size: 12pt !important;
+            }
+            #reading-progress, .fab-container, .main-header .meta {
+                display: none !important;
+            }
+            main.content {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .card, .table-responsive, blockquote, .callout, .score-card {
+                break-inside: avoid;
+                box-shadow: none !important;
+                border: 1px solid #000 !important;
+            }
+            .table-responsive { overflow: visible !important; }
+            a { text-decoration: none !important; color: #000 !important; }
+            .badge { border: 1px solid #000; color: #000 !important; background: transparent !important; }
+            .progress-bar-fill { background-color: #000 !important; border-right: 1px solid #000; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="reading-progress"></div>
+
+    <header class="main-header">
+        <h1>متابعة العادات الأسبوعيّة 🎯</h1>
+    </header>
+
+    <div class="layout">
+        <!-- المحتوى الرئيسي -->
+        <main class="content">
+            <article>
+                <h2 id="intro">📖 مقدمة الانطلاق</h2>
+                <p>إنَّ العادات اليوميّة وتتبّعها من أهم الركائز الأساسية نحو تحقيق النمو الشخصي المستدام والتطوّر المستمر.</p>
+                
+                <div class="callout callout-success">
+                    <strong>💡 تلميح:</strong> الالتزام بالخطوات الصغيرة يولد نتائج ضخمة بمرور الوقت، تذكر دائماً أن قليل دائم خير من كثير منقطع.
+                </div>
+
+                <h2 id="tracker">🗓️ جدول العادات الأسبوعي</h2>
+                <p>استخدم هذا الجدول التفاعلي لتتبع التزامك بالعادات المقررة خلال أيام الأسبوع. انقر على المربعات لتسجيل إنجازك اليومي.</p>
+                
+                <div class="table-responsive">
+                    <table class="habit-table">
+                        <thead>
+                            <tr>
+                                <th>العادة / اليوم</th>
+                                <th>السبت</th>
+                                <th>الأحد</th>
+                                <th>الإثنين</th>
+                                <th>الثلاثاء</th>
+                                <th>الأربعاء</th>
+                                <th>الخميس</th>
+                                <th>الجمعة</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>🌅 صلاة الفجر</td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>📿 استغفار بعد صلاة الفجر</td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>☕ فطور + قهوة</td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>☀️ صلاة الظهر</td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>📿 تسبيح بعد صلاة الظهر</td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>🍽️ وجبة الغداء</td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>🌇 صلاة المغرب</td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>📿 استغفار بعد صلاة المغرب</td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>🚶 مشي لمدّة 15 دقيقة</td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>🍲 وجبة العشاء</td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>💧 مرطّب للشفاه</td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2 id="progress">📊 نسبة الإنجاز العام</h2>
+                <div class="score-card">
+                    <div class="score-header">
+                        <span>معدل التقدم الأسبوعي الكلي</span>
+                        <span id="score-percentage">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="score-fill"></div>
+                    </div>
+                </div>
+
+                <h2 id="comparison">⚖️ مقارنة الأداء</h2>
+                <div class="comparison-grid">
+                    <div class="card card-positive">
+                        <h3>📈 الإيجابيات</h3>
+                        <p>تطبيقك المستمر للعادات المدرجة يزيد من التركيز، ويمنحك طاقة إيجابية عالية تدوم طوال اليوم.</p>
+                    </div>
+                    <div class="card card-negative">
+                        <h3>📉 السلبيات</h3>
+                        <p>إهمال المتابعة قد يؤدي إلى تراكم المهام والشعور بالإحباط وتراجع الإنتاجية بشكل ملحوظ.</p>
+                    </div>
+                </div>
+                <div class="verdict-box">
+                    الخلاصة: الاستمرارية في أداء <span class="badge">العادات الإيجابية</span> يصنع فارقاً نوعياً في جودة حياتك.
+                </div>
+
+                <h2 id="tips">💡 نصائح للالتزام</h2>
+                <blockquote>
+                    "نجاحك المستقبلي يختبئ في روتينك اليومي، فلا تستهن بتأثير الخطوات البسيطة التراكمية."
+                </blockquote>
+                <p>ننصحك باستخدام <span class="tooltip" data-tooltip="تقنية تعتمد على فترات عمل بتركيز تليها فترات راحة قصيرة">تقنية بومودورو</span> لإنجاز المهام، والحرص على تسجيل تقدمك يومياً قبل النوم لتشجيع عقلك على الاستمرار.</p>
+            </article>
+        </main>
+
+    </div>
+
+    <!-- الأزرار العائمة -->
+    <div class="fab-container">
+        <button id="print-btn" class="fab" title="طباعة الصفحة">🖨️</button>
+        <button id="back-to-top" class="fab" title="العودة لأعلى الصفحة">⬆️</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 2. شريط تقدم القراءة وزر الصعود للأعلى
+            const progressBar = document.getElementById('reading-progress');
+            const bttBtn = document.getElementById('back-to-top');
+            
+            window.addEventListener('scroll', () => {
+                const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+                progressBar.style.width = scrolled + '%';
+                
+                if (winScroll > 300) bttBtn.classList.add('show');
+                else bttBtn.classList.remove('show');
+            });
+
+            bttBtn.addEventListener('click', () => {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            });
+
+            // زر الطباعة
+            document.getElementById('print-btn').addEventListener('click', () => window.print());
+
+
+
+            // 6. تتبع العادات (Habit Tracker)
+            const checkboxes = document.querySelectorAll('.habit-table input[type="checkbox"]');
+            const scorePercentage = document.getElementById('score-percentage');
+            const scoreFill = document.getElementById('score-fill');
+
+            function updateScore() {
+                const total = checkboxes.length;
+                if(total === 0) return;
+                const checked = document.querySelectorAll('.habit-table input[type="checkbox"]:checked').length;
+                const percentage = Math.round((checked / total) * 100);
+                
+                scorePercentage.innerText = `${percentage}%`;
+                scoreFill.style.width = `${percentage}%`;
+                
+                // حفظ حالة كل مربع
+                const states = Array.from(checkboxes).map(cb => cb.checked);
+                localStorage.setItem('habit-states', JSON.stringify(states));
+            }
+
+            // استرجاع الحالات
+            const savedStates = JSON.parse(localStorage.getItem('habit-states') || '[]');
+            checkboxes.forEach((cb, index) => {
+                if(savedStates[index]) cb.checked = true;
+                cb.addEventListener('change', updateScore);
+            });
+            updateScore(); // التحديث الأولي
+
+
+
+        });
+    </script>
+</body>
+</html>
