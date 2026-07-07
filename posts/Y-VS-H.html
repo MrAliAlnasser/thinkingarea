@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بين يبرين وحرض: قرار موزون</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand: #F2EAD6;
+    --sand-2: #EBE0C6;
+    --ink: #26201B;
+    --ink-soft: #5B5147;
+    --night: #202A38;
+    --night-2: #2C394B;
+    --gold: #B98B3E;
+    --gold-soft: #D8B972;
+    --rust: #9C4A2E;
+    --rust-soft: #C97E5D;
+    --palm: #47664B;
+    --line: rgba(38,32,27,0.14);
+    --line-dark: rgba(255,255,255,0.14);
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--sand);
+    color: var(--ink);
+    font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .mono{ font-family: 'IBM Plex Mono', monospace; direction: ltr; unicode-bidi: isolate; }
+
+  .wrap{
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 22px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    background: linear-gradient(175deg, var(--night) 0%, var(--night-2) 65%, #33465C 100%);
+    color: #F3ECDD;
+    padding: 64px 0 40px;
+    overflow: hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background: radial-gradient(420px 320px at 88% 18%, rgba(216,185,114,0.30), transparent 70%);
+    pointer-events:none;
+  }
+  .star{
+    position:absolute;
+    width:3px; height:3px;
+    background: rgba(243,236,221,0.75);
+    border-radius:50%;
+  }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size: 13px;
+    letter-spacing: .04em;
+    color: var(--gold-soft);
+    font-weight: 700;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 2;
+  }
+  .eyebrow::before{
+    content:"";
+    width: 20px; height: 1px;
+    background: var(--gold-soft);
+    display:inline-block;
+  }
+
+  .hero h1{
+    font-size: clamp(32px, 7vw, 48px);
+    font-weight: 900;
+    margin: 0 0 10px;
+    position: relative;
+    z-index: 2;
+    line-height: 1.25;
+  }
+  .hero h1 span{ color: var(--gold-soft); }
+
+  .hero p.lede{
+    font-size: 16px;
+    font-weight: 300;
+    color: #D9D2C2;
+    max-width: 56ch;
+    margin: 0 0 34px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* road diagram */
+  .diagram-wrap{
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 18px;
+    z-index: 2;
+  }
+  .diagram-wrap svg{ display:block; width:100%; height:auto; }
+
+  .diagram-label{
+    position: absolute;
+    transform: translate(0, -50%);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    backdrop-filter: blur(2px);
+  }
+  .lbl-home{ background: rgba(255,255,255,0.08); color:#F3ECDD; border:1px solid var(--line-dark); }
+  .lbl-yabreen{ background: rgba(71,102,75,0.35); color:#CFE5D2; border:1px solid rgba(71,102,75,0.6); }
+  .lbl-hard{ background: rgba(156,74,46,0.30); color:#F0CDBE; border:1px solid rgba(156,74,46,0.55); }
+
+  .verdict-strip{
+    position: relative;
+    z-index: 2;
+    display:flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .chip{
+    font-size: 13px;
+    font-weight: 700;
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--line-dark);
+  }
+  .chip.strong{
+    background: var(--gold-soft);
+    color: #241C0C;
+    border-color: transparent;
+  }
+  .chip.ghost{ color: #E9E2D0; }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding: 54px 0; }
+  section + section{ border-top: 1px solid var(--line); }
+
+  .kicker{
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--rust);
+    letter-spacing: .03em;
+    margin: 0 0 8px;
+  }
+  h2{
+    font-size: clamp(24px, 4.5vw, 30px);
+    font-weight: 800;
+    margin: 0 0 14px;
+  }
+  .section-intro{
+    color: var(--ink-soft);
+    font-weight: 300;
+    max-width: 62ch;
+    margin: 0 0 30px;
+  }
+
+  /* axes comparison */
+  .axes-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .axes-col{ padding: 24px 20px; }
+  .axes-col.yabreen{ background: rgba(71,102,75,0.07); }
+  .axes-col.hard{ background: rgba(156,74,46,0.06); border-right: 1px solid var(--line); }
+  .axes-col h3{
+    font-size: 15px;
+    font-weight: 800;
+    margin: 0 0 14px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .dot{ width:9px; height:9px; border-radius:50%; display:inline-block; flex-shrink:0; }
+  .dot.yabreen{ background: var(--palm); }
+  .dot.hard{ background: var(--rust); }
+  .axes-col ul{ margin:0; padding:0; list-style:none; }
+  .axes-col li{
+    font-size: 14.5px;
+    font-weight: 400;
+    color: var(--ink);
+    padding: 8px 0;
+    border-top: 1px dashed var(--line);
+  }
+  .axes-col li:first-child{ border-top:none; padding-top:0; }
+
+  @media (max-width: 620px){
+    .axes-grid{ grid-template-columns: 1fr; }
+    .axes-col.hard{ border-right:none; border-top: 1px solid var(--line); }
+  }
+
+  /* scorecard */
+  .score-row{ margin-bottom: 18px; }
+  .score-label{
+    display:flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .score-label .nums{ color: var(--ink-soft); font-weight: 500; }
+  .bar-track{
+    background: var(--sand-2);
+    border-radius: 999px;
+    height: 9px;
+    display:flex;
+    overflow:hidden;
+    margin-bottom: 4px;
+  }
+  .bar-fill{ height:100%; border-radius:999px; }
+  .bar-fill.yabreen{ background: var(--palm); }
+  .bar-fill.hard{ background: var(--rust); }
+
+  .score-total{
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 2px solid var(--ink);
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-weight: 800;
+    font-size: 17px;
+  }
+  .score-total .mono{ font-size: 20px; }
+
+  /* long-term */
+  .slider-card{
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 22px;
+    background: #fff;
+  }
+  .slider-top{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  input[type="range"]{
+    width: 100%;
+    accent-color: var(--rust);
+    margin: 14px 0 20px;
+  }
+  .impact-figures{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .figure{
+    background: var(--sand);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .figure .num{ font-size: 26px; font-weight: 700; display:block; }
+  .figure .cap{ font-size: 12.5px; color: var(--ink-soft); }
+
+  .growth-bars{ display:flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+  .growth-row{ display:flex; align-items:center; gap: 10px; }
+  .growth-row .g-label{ font-size: 13px; font-weight:700; width: 70px; flex-shrink:0; }
+  .growth-track{ flex:1; background: var(--sand-2); border-radius: 999px; height: 14px; overflow:hidden; }
+  .growth-fill{ height:100%; border-radius:999px; transition: width .35s ease; }
+  .growth-fill.yabreen{ background: var(--palm); }
+  .growth-fill.hard{ background: var(--rust); }
+
+  .footnote{
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    font-weight: 300;
+    margin-top: 4px;
+  }
+
+  /* verdict */
+  .verdict-box{
+    border-right: 4px solid var(--gold);
+    padding: 4px 0 4px 0;
+    padding-right: 22px;
+  }
+  .verdict-box h2{ margin-bottom: 16px; }
+  .verdict-box p{ font-weight: 300; color: var(--ink); }
+  .verdict-box p.tight{ margin-bottom: 12px; }
+  .note-box{
+    margin-top: 24px;
+    background: rgba(71,102,75,0.08);
+    border: 1px solid rgba(71,102,75,0.25);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 14px;
+  }
+  .note-box b{ color: var(--palm); }
+
+  footer{
+    padding: 30px 0 50px;
+    text-align:center;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+
+  /* reveal animation */
+  .reveal{
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible{ opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    .reveal{ opacity:1; transform:none; transition:none; }
+    .growth-fill{ transition:none; }
+  }
+
+  :focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="star" style="top:12%; left:20%;"></div>
+  <div class="star" style="top:22%; left:34%;"></div>
+  <div class="star" style="top:9%; left:52%;"></div>
+  <div class="star" style="top:30%; left:12%;"></div>
+  <div class="star" style="top:16%; left:68%;"></div>
+  <div class="wrap">
+    <p class="eyebrow">قرار مهني مدروس</p>
+    <h1>بين <span>يبرين</span> وحرض</h1>
+    <p class="lede">مقارنة مبنية على معطيات واقعية: الدوام، التنقل، التكلفة، الطاقم، والأثر المتراكم على مدى عشر سنوات.</p>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M750,150 C 560,95 320,90 120,90" fill="none" stroke="#47664B" stroke-width="4" stroke-linecap="round"/>
+        <path d="M750,150 C 620,230 560,110 430,150 C 320,185 220,140 80,210" fill="none" stroke="#9C4A2E" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 10" stroke-dashoffset="0"/>
+
+        <circle cx="750" cy="150" r="7" fill="#F3ECDD"/>
+        <circle cx="120" cy="90" r="7" fill="#47664B"/>
+        <circle cx="430" cy="150" r="5" fill="#9C4A2E"/>
+        <circle cx="80" cy="210" r="7" fill="#9C4A2E"/>
+      </svg>
+
+      <span class="diagram-label lbl-home" style="right:5%; top:50%;">🏠 السكن</span>
+      <span class="diagram-label lbl-yabreen" style="right:16%; top:26%;">🚶 يبرين — مشي</span>
+      <span class="diagram-label lbl-hard" style="right:9%; top:72%;">🚗 حرض — طريق يومي</span>
+    </div>
+
+    <div class="verdict-strip">
+      <span class="chip strong">النتيجة: ٤٠ مقابل ٢٧</span>
+      <span class="chip ghost">القرار: البقاء في يبرين</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="reveal">
+    <p class="kicker">المحاور الرئيسية</p>
+    <h2>ما الذي يفرّق بين الخيارين فعليًا؟</h2>
+    <p class="section-intro">قبل أي رقم، هذه أبرز النقاط التي بُني عليها القرار، مقسّمة حسب كل خيار.</p>
+
+    <div class="axes-grid">
+      <div class="axes-col yabreen">
+        <h3><span class="dot yabreen"></span> يبرين</h3>
+        <ul>
+          <li>دوام أخف: يومان إلى ثلاثة أيام أسبوعيًا فقط</li>
+          <li>السكن على مسافة مشي من المدرسة، بلا تنقل يومي</li>
+          <li>الثوب يبقى مرتبًا طوال الوقت</li>
+          <li>قرب من السكن والمستوصف عند أي طارئ صحي</li>
+          <li>شاشات ذكية متوفرة داخل الفصول</li>
+          <li>مدير متعاون ومتفهّم</li>
+        </ul>
+      </div>
+      <div class="axes-col hard">
+        <h3><span class="dot hard"></span> حرض</h3>
+        <ul>
+          <li>بلا تكلفة سكن أو كهرباء</li>
+          <li>فرصة لتغيير الطاقم الحالي غير المناسب</li>
+          <li>دوام يومي كامل، خمسة أيام أسبوعيًا</li>
+          <li>تنقل رايح-جاي يوميًا، وقت وجهد إضافي</li>
+          <li>الثوب يتجعّد في الطريق</li>
+          <li>تعب مضاعف عند أي طارئ صحي أثناء التنقل</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <p class="kicker">بطاقة النقاط</p>
+    <h2>المقارنة رقميًا، من 5 لكل بند</h2>
+    <p class="section-intro">كل بند وُزّن حسب أهميته الفعلية على الحياة اليومية، لا حسب ترتيب ذكره.</p>
+
+    <div class="scorecard">
+      <!-- rows generated with fixed markup for reliability -->
+      <div class="score-row">
+        <div class="score-label"><span>أيام الدوام</span><span class="nums mono">5 / 2</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:100%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:40%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>التنقل اليومي</span><span class="nums mono">5 / 2</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:100%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:40%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>الطوارئ الصحية</span><span class="nums mono">5 / 2</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:100%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:40%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>المدير</span><span class="nums mono">5 / 3</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:100%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:60%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>المظهر (الثوب)</span><span class="nums mono">4 / 2</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:80%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:40%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>جلسة الصباح</span><span class="nums mono">4 / 2</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:80%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:40%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>القروب / الزملاء</span><span class="nums mono">4 / 2</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:80%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:40%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>الشاشات الذكية</span><span class="nums mono">4 / 3</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:80%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:60%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>التكلفة (سكن / كهرباء)</span><span class="nums mono">2 / 5</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:40%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:100%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>الطاقم</span><span class="nums mono">2 / 4</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:40%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:80%"></div></div>
+      </div>
+
+      <div class="score-total">
+        <span>المجموع</span>
+        <span class="mono">40 — 27</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <p class="kicker">الأثر على المدى البعيد</p>
+    <h2>ماذا يحدث لهذا الفارق بعد عشر سنوات؟</h2>
+    <p class="section-intro">مشكلة الطاقم في يبرين عامل مؤقت وقابل للتغيير. أما تعب التنقل اليومي في حرض فيتكرر كل يوم عمل، ويتراكم بلا توقف. حرّك المؤشر لترى كيف تتّسع الفجوة.</p>
+
+    <div class="slider-card">
+      <div class="slider-top">
+        <span>عدد السنوات</span>
+        <span class="mono" id="yearsValue">5</span>
+      </div>
+      <input type="range" min="1" max="10" step="1" value="5" id="yearsRange" aria-label="عدد السنوات">
+
+      <div class="impact-figures">
+        <div class="figure">
+          <span class="num mono" id="daysLost">50.0</span>
+          <span class="cap">يوم كامل من الوقت الإضافي في التنقل (حرض)</span>
+        </div>
+        <div class="figure">
+          <span class="num mono" id="monthsLost">1.7</span>
+          <span class="cap">شهر تقريبًا من عمرك في الطريق فقط</span>
+        </div>
+      </div>
+
+      <div class="growth-bars">
+        <div class="growth-row">
+          <span class="g-label">يبرين</span>
+          <div class="growth-track"><div class="growth-fill yabreen" id="yabreenBar" style="width:3%"></div></div>
+        </div>
+        <div class="growth-row">
+          <span class="g-label">حرض</span>
+          <div class="growth-track"><div class="growth-fill hard" id="hardBar" style="width:50%"></div></div>
+        </div>
+      </div>
+
+      <p class="footnote">* تقدير توضيحي فقط، بافتراض نحو ساعة تنقل إضافية يوميًا في حرض على مدار ٢٤٠ يوم عمل بالسنة تقريبًا، مقابل تنقل شبه معدوم (مشي) في يبرين. الرقم لغرض التوضيح لا الدقة الحسابية.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="verdict-box">
+      <p class="kicker">القرار النهائي</p>
+      <h2>البقاء في يبرين</h2>
+      <p class="tight">التوفير المادي في حرض حقيقي، وفرصة تغيير الطاقم مغرية، لكنهما لا يوازيان سنوات من التنقل اليومي المتعب، ودوامًا كاملًا بدل يومين أو ثلاثة، وفقدان الأمان الذي يمنحه القرب من السكن والمستوصف عند أي طارئ صحي.</p>
+      <p>على مدى عشر سنوات، الفجوة تتّسع لصالح يبرين، لأن راحتها اليومية تتكرر وتتراكم إيجابًا، بينما تعب حرض يتكرر ويتراكم سلبًا. البقاء هو القرار الأكثر اتزانًا لجودة الحياة اليومية وللسلامة الصحية على المدى الطويل.</p>
+
+      <div class="note-box">
+        <b>ملاحظة:</b> مشكلة الطاقم في يبرين مؤقتة ويمكن السعي لحلّها عبر طلب نقل داخلي أو التنسيق مع المدير المتعاون، بدل تحمّل تعب حرض اليومي لسنوات.
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>ملخص شخصي لدعم اتخاذ القرار</footer>
+
+<script>
+  // Scroll reveal
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion) {
+    revealEls.forEach(el => el.classList.add('visible'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+  }
+
+  // 10-year impact slider
+  const WORKDAYS_PER_YEAR = 240;
+  const EXTRA_MIN_PER_DAY = 60;
+
+  const slider = document.getElementById('yearsRange');
+  const yearsValue = document.getElementById('yearsValue');
+  const daysLost = document.getElementById('daysLost');
+  const monthsLost = document.getElementById('monthsLost');
+  const hardBar = document.getElementById('hardBar');
+  const yabreenBar = document.getElementById('yabreenBar');
+
+  function updateImpact(n) {
+    const totalMinutes = n * WORKDAYS_PER_YEAR * EXTRA_MIN_PER_DAY;
+    const totalDays = totalMinutes / 60 / 24;
+    const totalMonths = totalDays / 30;
+
+    yearsValue.textContent = n;
+    daysLost.textContent = totalDays.toFixed(1);
+    monthsLost.textContent = totalMonths.toFixed(1);
+
+    const hardPct = Math.min(100, (n / 10) * 100);
+    const yabreenPct = Math.min(100, (n / 10) * 6);
+    hardBar.style.width = hardPct + '%';
+    yabreenBar.style.width = yabreenPct + '%';
+  }
+
+  slider.addEventListener('input', (e) => updateImpact(Number(e.target.value)));
+  updateImpact(Number(slider.value));
+</script>
+
+</body>
+</html>
