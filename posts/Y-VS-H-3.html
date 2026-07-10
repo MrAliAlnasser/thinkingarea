@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بين يبرين وحرض: قرار موزون ومراجعة مجلس استشاري</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sand: #F2EAD6; --sand-2: #EBE0C6; --ink: #26201B; --ink-soft: #5B5147;
+    --night: #202A38; --night-2: #2C394B; --gold: #B98B3E; --gold-soft: #D8B972;
+    --rust: #9C4A2E; --rust-soft: #C97E5D; --palm: #47664B;
+    --line: rgba(38,32,27,0.14); --line-dark: rgba(255,255,255,0.14); --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body{ margin:0; background: var(--sand); color: var(--ink); font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+  .mono{ font-family: 'IBM Plex Mono', monospace; direction: ltr; unicode-bidi: isolate; }
+  .wrap{ max-width: 780px; margin: 0 auto; padding: 0 22px; }
+
+  .hero{ position: relative; background: linear-gradient(175deg, var(--night) 0%, var(--night-2) 65%, #33465C 100%); color: #F3ECDD; padding: 64px 0 40px; overflow: hidden; }
+  .hero::before{ content:""; position:absolute; inset:0; background: radial-gradient(420px 320px at 88% 18%, rgba(216,185,114,0.30), transparent 70%); pointer-events:none; }
+  .star{ position:absolute; width:3px; height:3px; background: rgba(243,236,221,0.75); border-radius:50%; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:8px; font-size: 13px; letter-spacing: .04em; color: var(--gold-soft); font-weight: 700; margin-bottom: 18px; position: relative; z-index: 2; }
+  .eyebrow::before{ content:""; width: 20px; height: 1px; background: var(--gold-soft); display:inline-block; }
+  .hero h1{ font-size: clamp(32px, 7vw, 48px); font-weight: 900; margin: 0 0 10px; position: relative; z-index: 2; line-height: 1.25; }
+  .hero h1 span{ color: var(--gold-soft); }
+  .hero p.lede{ font-size: 16px; font-weight: 300; color: #D9D2C2; max-width: 58ch; margin: 0 0 28px; position: relative; z-index: 2; }
+  .update-tag{ position: relative; z-index:2; display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700; color:#241C0C; background: var(--gold-soft); padding: 6px 13px; border-radius: 999px; margin-bottom: 22px; }
+
+  .diagram-wrap{ position: relative; width: 100%; max-width: 640px; margin: 0 auto 18px; z-index: 2; }
+  .diagram-wrap svg{ display:block; width:100%; height:auto; }
+  .diagram-label{ position: absolute; transform: translate(0, -50%); font-size: 13px; font-weight: 700; white-space: nowrap; display:flex; align-items:center; gap:6px; padding: 4px 10px; border-radius: 999px; backdrop-filter: blur(2px); }
+  .lbl-home{ background: rgba(255,255,255,0.08); color:#F3ECDD; border:1px solid var(--line-dark); }
+  .lbl-yabreen{ background: rgba(71,102,75,0.35); color:#CFE5D2; border:1px solid rgba(71,102,75,0.6); }
+  .lbl-hard{ background: rgba(156,74,46,0.30); color:#F0CDBE; border:1px solid rgba(156,74,46,0.55); }
+
+  .verdict-strip{ position: relative; z-index: 2; display:flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+  .chip{ font-size: 13px; font-weight: 700; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line-dark); }
+  .chip.strong{ background: var(--gold-soft); color: #241C0C; border-color: transparent; }
+  .chip.ghost{ color: #E9E2D0; }
+  .chip.ok{ color: #CFE5D2; border-color: rgba(71,102,75,0.55); }
+
+  .subnav{ position: sticky; top: 0; z-index: 20; background: rgba(242,234,214,0.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .subnav-inner{ display:flex; gap: 6px; padding: 10px 22px; overflow-x: auto; }
+  .subnav a{ font-size: 13px; font-weight: 700; color: var(--ink-soft); text-decoration: none; padding: 7px 13px; border-radius: 999px; white-space: nowrap; transition: background .2s ease, color .2s ease; }
+  .subnav a:hover, .subnav a:focus-visible{ background: var(--sand-2); color: var(--ink); }
+
+  .update-box{ border: 1px solid rgba(185,139,62,0.35); background: rgba(185,139,62,0.08); border-radius: var(--radius); padding: 20px 20px; margin-top: 36px; }
+  .update-box .role-head{ display:flex; align-items:center; gap:9px; margin-bottom: 12px; }
+  .update-box h3{ font-size: 15px; font-weight: 800; margin:0; color: var(--gold); }
+  .update-box ul{ margin:0; padding-right: 18px; }
+  .update-box li{ font-size: 14px; margin-bottom: 8px; }
+  .update-box li:last-child{ margin-bottom:0; }
+  .update-box b{ color: var(--ink); }
+
+  section{ padding: 54px 0; scroll-margin-top: 58px; }
+  section + section{ border-top: 1px solid var(--line); }
+  .kicker{ font-size: 12.5px; font-weight: 700; color: var(--rust); letter-spacing: .03em; margin: 0 0 8px; }
+  h2{ font-size: clamp(24px, 4.5vw, 30px); font-weight: 800; margin: 0 0 14px; }
+  .section-intro{ color: var(--ink-soft); font-weight: 300; max-width: 62ch; margin: 0 0 30px; }
+
+  .axes-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .axes-col{ padding: 24px 20px; }
+  .axes-col.yabreen{ background: rgba(71,102,75,0.07); }
+  .axes-col.hard{ background: rgba(156,74,46,0.06); border-right: 1px solid var(--line); }
+  .axes-col h3{ font-size: 15px; font-weight: 800; margin: 0 0 14px; display:flex; align-items:center; gap:8px; }
+  .dot{ width:9px; height:9px; border-radius:50%; display:inline-block; flex-shrink:0; }
+  .dot.yabreen{ background: var(--palm); }
+  .dot.hard{ background: var(--rust); }
+  .axes-col ul{ margin:0; padding:0; list-style:none; }
+  .axes-col li{ font-size: 14.5px; font-weight: 400; color: var(--ink); padding: 8px 0; border-top: 1px dashed var(--line); }
+  .axes-col li:first-child{ border-top:none; padding-top:0; }
+  @media (max-width: 620px){ .axes-grid{ grid-template-columns: 1fr; } .axes-col.hard{ border-right:none; border-top: 1px solid var(--line); } }
+
+  .score-row{ margin-bottom: 18px; }
+  .score-label{ display:flex; justify-content: space-between; font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .score-label .nums{ color: var(--ink-soft); font-weight: 500; }
+  .bar-track{ background: var(--sand-2); border-radius: 999px; height: 9px; display:flex; overflow:hidden; margin-bottom: 4px; }
+  .bar-fill{ height:100%; border-radius:999px; }
+  .bar-fill.yabreen{ background: var(--palm); }
+  .bar-fill.hard{ background: var(--rust); }
+  .score-total{ margin-top: 26px; padding-top: 22px; border-top: 2px solid var(--ink); display:flex; justify-content: space-between; align-items: baseline; font-weight: 800; font-size: 17px; }
+  .score-total .mono{ font-size: 20px; }
+
+  .slider-card{ border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 22px; background: #fff; }
+  .slider-top{ display:flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-weight: 700; font-size: 14px; }
+  input[type="range"]{ width: 100%; accent-color: var(--rust); margin: 14px 0 20px; }
+  .impact-figures{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .figure{ background: var(--sand); border-radius: 10px; padding: 14px 16px; }
+  .figure .num{ font-size: 26px; font-weight: 700; display:block; }
+  .figure .cap{ font-size: 12.5px; color: var(--ink-soft); }
+  .growth-bars{ display:flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+  .growth-row{ display:flex; align-items:center; gap: 10px; }
+  .growth-row .g-label{ font-size: 13px; font-weight:700; width: 70px; flex-shrink:0; }
+  .growth-track{ flex:1; background: var(--sand-2); border-radius: 999px; height: 14px; overflow:hidden; }
+  .growth-fill{ height:100%; border-radius:999px; transition: width .35s ease; }
+  .growth-fill.yabreen{ background: var(--palm); }
+  .growth-fill.hard{ background: var(--rust); }
+  .footnote{ font-size: 12.5px; color: var(--ink-soft); font-weight: 300; margin-top: 4px; }
+  .footnote + .footnote{ margin-top: 8px; }
+
+  .verdict-box{ border-right: 4px solid var(--palm); padding-right: 22px; }
+  .verdict-box h2{ margin-bottom: 16px; }
+  .verdict-box p{ font-weight: 300; color: var(--ink); }
+  .verdict-box p.tight{ margin-bottom: 12px; }
+  .note-box{ margin-top: 24px; background: rgba(71,102,75,0.08); border: 1px solid rgba(71,102,75,0.25); border-radius: 10px; padding: 16px 18px; font-size: 14px; }
+  .note-box b{ color: var(--palm); }
+  .next-pointer{ margin-top: 28px; font-size: 13.5px; font-weight: 700; color: var(--ink-soft); display:flex; align-items:center; gap:8px; }
+
+  .chapter-divider{ background: linear-gradient(175deg, var(--night), var(--night-2)); color:#F3ECDD; text-align:center; padding: 50px 22px; }
+  .chapter-divider .kicker{ color: var(--gold-soft); }
+  .chapter-divider h2{ color:#fff; margin-bottom:10px; }
+  .chapter-divider p{ color:#D9D2C2; font-weight:300; max-width:56ch; margin:0 auto; }
+  .chapter-divider .icons-row{ margin-top:20px; font-size:22px; opacity:.55; letter-spacing:8px; }
+
+  .phase-title{ display:flex; align-items:center; gap:10px; font-size: 13px; font-weight: 800; color: var(--ink-soft); letter-spacing:.02em; margin: 0 0 20px; }
+  .phase-title::after{ content:""; flex:1; height:1px; background: var(--line); }
+
+  .council-card{ border: 1px solid var(--line); border-radius: var(--radius); background: #fff; padding: 20px 20px; margin-bottom: 16px; }
+  .role-head{ display:flex; align-items:center; gap:10px; margin-bottom: 12px; }
+  .role-num{ font-size: 12px; color: var(--ink-soft); background: var(--sand); border-radius: 6px; padding: 2px 7px; flex-shrink:0; }
+  .role-icon{ font-size: 19px; flex-shrink:0; }
+  .role-titles{ display:flex; flex-direction:column; }
+  .role-titles h3{ font-size: 15.5px; font-weight: 800; margin:0; }
+  .role-titles span{ font-size: 12px; color: var(--ink-soft); font-weight: 400; }
+  .council-card ul{ margin:0; padding-right: 18px; }
+  .council-card li{ font-size: 14px; margin-bottom: 7px; }
+  .council-card li:last-child{ margin-bottom:0; }
+  .council-card ol{ margin:0; padding-right: 20px; }
+  .council-card ol li{ font-size: 14px; margin-bottom: 8px; }
+  .council-card.critic{ border-color: rgba(156,74,46,0.35); }
+  .council-card.critic .role-num{ background: rgba(156,74,46,0.12); color: var(--rust); }
+  .obstacle-note{ margin-top: 12px; background: rgba(156,74,46,0.07); border: 1px solid rgba(156,74,46,0.22); border-radius: 8px; padding: 11px 14px; font-size: 13.5px; }
+  .obstacle-note b{ color: var(--rust); }
+  .reco-line{ margin-top: 16px; background: rgba(185,139,62,0.10); border: 1px solid rgba(185,139,62,0.3); border-radius: 8px; padding: 13px 16px; font-size: 14px; font-weight: 500; }
+  .reco-line b{ color: var(--gold); }
+
+  .final-decision{ background: linear-gradient(175deg, var(--night), var(--night-2)); color:#F3ECDD; border-radius: var(--radius); border-right: 5px solid var(--palm); padding: 28px 24px; }
+  .final-decision .kicker{ color: var(--gold-soft); }
+  .final-decision h2{ color:#fff; }
+  .final-decision p{ color:#D9D2C2; font-weight:300; }
+  .final-decision p.tight{ margin-bottom:12px; }
+  .confidence-row{ display:flex; align-items:center; gap:10px; margin: 18px 0; flex-wrap:wrap; }
+  .confidence-chip{ font-size: 13px; font-weight: 800; padding: 8px 15px; border-radius: 999px; background: rgba(159,201,166,0.18); border: 1px solid rgba(159,201,166,0.45); color: #B9DABE; }
+  .confidence-chip.up::before{ content:"↑ "; }
+  .missing-info{ margin-top: 16px; background: rgba(255,255,255,0.06); border: 1px solid var(--line-dark); border-radius: 10px; padding: 16px 18px; }
+  .missing-info p.label{ font-size: 13px; font-weight: 800; color:#F3ECDD; margin: 0 0 10px; }
+  .missing-info ol{ margin:0; padding-right: 18px; }
+  .missing-info li{ font-size: 13.5px; color:#D9D2C2; margin-bottom: 7px; }
+  .missing-info li:last-child{ margin-bottom:0; }
+
+  footer{ padding: 30px 0 50px; text-align:center; font-size: 12.5px; color: var(--ink-soft); }
+  .reveal{ opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible{ opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } .reveal{ opacity:1; transform:none; transition:none; } .growth-fill{ transition:none; } }
+  :focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="star" style="top:12%; left:20%;"></div>
+  <div class="star" style="top:22%; left:34%;"></div>
+  <div class="star" style="top:9%; left:52%;"></div>
+  <div class="star" style="top:30%; left:12%;"></div>
+  <div class="star" style="top:16%; left:68%;"></div>
+  <div class="wrap">
+    <p class="eyebrow">قرار مهني مدروس</p>
+    <h1>بين <span>يبرين</span> وحرض</h1>
+    <p class="lede">الجزء الأول تحليل شخصي مبني على بيانات فعلية كاملة، والجزء الثاني مراجعة مستقلة عبر مجلس استشاري ذكي من ثماني شخصيات.</p>
+    <span class="update-tag">📊 قرار مبني على بيانات فعلية شاملة</span>
+
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M750,150 C 560,95 320,90 120,90" fill="none" stroke="#47664B" stroke-width="4" stroke-linecap="round"/>
+        <path d="M750,150 C 620,230 560,110 430,150 C 320,185 220,140 80,210" fill="none" stroke="#9C4A2E" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 10" stroke-dashoffset="0"/>
+        <circle cx="750" cy="150" r="7" fill="#F3ECDD"/>
+        <circle cx="120" cy="90" r="7" fill="#47664B"/>
+        <circle cx="430" cy="150" r="5" fill="#9C4A2E"/>
+        <circle cx="80" cy="210" r="7" fill="#9C4A2E"/>
+      </svg>
+      <span class="diagram-label lbl-home" style="right:5%; top:50%;">🏠 الأحساء</span>
+      <span class="diagram-label lbl-yabreen" style="right:16%; top:26%;">🚶 يبرين — أسبوعيًا ٢.٥ساعة</span>
+      <span class="diagram-label lbl-hard" style="right:9%; top:72%;">🚗 حرض — يوميًا ١.٥ساعة</span>
+    </div>
+
+    <div class="verdict-strip">
+      <span class="chip strong">النتيجة: ٤٧ مقابل ٢٩</span>
+      <span class="chip ok">✅ القرار: البقاء في يبرين</span>
+      <span class="chip ghost">ثقة مرتفعة</span>
+    </div>
+  </div>
+</header>
+
+<nav class="subnav">
+  <div class="subnav-inner">
+    <a href="#personal">١ · التحليل الشخصي</a>
+    <a href="#council">٢ · مجلس الاستشارة الذكي</a>
+    <a href="#chair-decision">قرار رئيس المجلس</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <div class="update-box">
+    <div class="role-head"><span class="role-icon">📌</span><h3>المعطيات الأساسية التي بُني عليها القرار</h3></div>
+    <ul>
+      <li>خطر فقدان مقعد حرض <b>تقدير شخصي غير قابل للتأكيد</b> أصلًا (يتغيّر كل سنة) — لا معلومة رسمية ثابتة يمكن الاستناد إليها.</li>
+      <li>المدارس الأخرى القريبة من الأحساء (8 مدارس ضمن النقل الداخلي) <b>ممتلئة أيضًا</b>، فحرض ليست استثناءً في الندرة، بل الوضع العام.</li>
+      <li>مشكلة الطاقم في يبرين <b>احتكاك يومي مباشر ومتعب فعلًا</b>، لكنه ينتهي تلقائيًا عند انتقال هؤلاء المعلمين — مسألة وقت غير محددة لا حل دائم مفقود.</li>
+      <li>العمر 35 سنة، ويتبقى نحو 28 سنة للتقاعد النظامي — أي أن انتظار نقل الأحساء (10 سنوات) يشكّل نحو ثلث المسيرة المتبقية فقط، لا الأغلبية.</li>
+      <li>نقل الأحساء المستقبلي يحتاج 10 سنوات <b>بغض النظر عن اختيار يبرين أو حرض</b> — الانتقال لا يُسرّع هذا الموعد.</li>
+      <li><b>القيادة اليومية يصعب تحمّلها فعليًا</b> صحيًا، حتى مع تفويج، خصوصًا عند أي وعكة طارئة في الطريق.</li>
+      <li>لا فرق في الراتب أو البدلات بين الموقعين؛ الفارق المالي الوحيد نحو 100 ريال شهريًا فقط.</li>
+      <li>عند التخيير المباشر: <b>الأولوية الشخصية هي الراحة اليومية المضمونة الآن</b>.</li>
+    </ul>
+  </div>
+
+  <section class="reveal" id="personal" style="padding-top:36px;">
+    <p class="kicker">المحاور الرئيسية</p>
+    <h2>ما الذي يفرّق بين الخيارين فعليًا؟</h2>
+    <p class="section-intro">قبل أي رقم، هذه أبرز النقاط التي بُني عليها القرار، مقسّمة حسب كل خيار.</p>
+
+    <div class="axes-grid">
+      <div class="axes-col yabreen">
+        <h3><span class="dot yabreen"></span> يبرين</h3>
+        <ul>
+          <li>دوام أخف: يومان إلى ثلاثة أيام أسبوعيًا فقط</li>
+          <li>رحلة تنقل واحدة أسبوعيًا فقط، رغم طولها (٢.٥ ساعة ذهابًا)</li>
+          <li>لا عبء صحي من قيادة يومية متكررة</li>
+          <li>قرب من السكن والمستوصف عند أي طارئ صحي</li>
+          <li>مشكلة الطاقم احتكاك يومي حقيقي، لكنه ينتهي تلقائيًا عند تبدّل الطاقم</li>
+          <li>تكلفة شهرية ~1000 ريال</li>
+        </ul>
+      </div>
+      <div class="axes-col hard">
+        <h3><span class="dot hard"></span> حرض</h3>
+        <ul>
+          <li>تنقل يومي كامل: ١.٥ ساعة ذهابًا، خمسة أيام أسبوعيًا — يصعب تحمّله صحيًا على المدى الطويل</li>
+          <li>تكلفة شهرية ~900 ريال — فارق ضئيل عن يبرين</li>
+          <li>فرصة تُعتقد أنها نادرة، لكنها تقدير شخصي غير مؤكد، والبدائل القريبة الأخرى ممتلئة أصلًا بنفس القدر</li>
+          <li>الانتقال إليها لا يُسرّع نقل الأحساء المستقبلي (10 سنوات ثابتة في الحالتين)</li>
+          <li>طاقم جديد، لكن بمخاطرة صحية يومية بدلاً منه</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <p class="kicker">بطاقة النقاط</p>
+    <h2>المقارنة رقميًا، من 5 لكل بند</h2>
+    <p class="section-intro">أحد عشر بندًا، كل واحد وُزّن حسب أهميته الفعلية على الحياة اليومية والمسيرة المهنية، لا حسب ترتيب ذكره.</p>
+
+    <div class="scorecard">
+      <div class="score-row">
+        <div class="score-label"><span>أيام الدوام</span><span class="nums mono">5 / 2</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:100%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:40%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>عبء التنقل التراكمي</span><span class="nums mono">5 / 1</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:100%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:20%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>الطوارئ الصحية</span><span class="nums mono">5 / 2</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:100%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:40%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>المدير</span><span class="nums mono">5 / 3</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:100%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:60%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>القدرة الجسدية على القيادة اليومية</span><span class="nums mono">5 / 1</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:100%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:20%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>المظهر (الثوب)</span><span class="nums mono">4 / 2</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:80%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:40%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>جلسة الصباح</span><span class="nums mono">4 / 2</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:80%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:40%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>القروب / الزملاء</span><span class="nums mono">4 / 2</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:80%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:40%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>الشاشات الذكية</span><span class="nums mono">4 / 3</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:80%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:60%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>التكلفة (~1000 / ~900 ريال)</span><span class="nums mono">3 / 3</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:60%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:60%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>الطاقم (احتكاك يومي، لكن مؤقت بالدوران)</span><span class="nums mono">1 / 4</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:20%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:80%"></div></div>
+      </div>
+      <div class="score-row">
+        <div class="score-label"><span>فرصة حرض المستقبلية (تقدير غير مؤكد)</span><span class="nums mono">2 / 4</span></div>
+        <div class="bar-track"><div class="bar-fill yabreen" style="width:40%"></div></div>
+        <div class="bar-track"><div class="bar-fill hard" style="width:80%"></div></div>
+      </div>
+
+      <div class="score-total">
+        <span>المجموع</span>
+        <span class="mono">47 — 29</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <p class="kicker">الأثر على المدى البعيد</p>
+    <h2>الفارق الزمني الفعلي، وحجمه من مسيرتك الكاملة</h2>
+    <p class="section-intro">نقل الأحساء المستقبلي يحتاج 10 سنوات في الحالتين. بعمر 35 و28 سنة متبقية للتقاعد، هذا الانتظار يشكّل نحو ثلث المسيرة المتبقية فقط — لا الأغلبية.</p>
+
+    <div class="slider-card">
+      <div class="slider-top">
+        <span>عدد السنوات</span>
+        <span class="mono" id="yearsValue">5</span>
+      </div>
+      <input type="range" min="1" max="10" step="1" value="5" id="yearsRange" aria-label="عدد السنوات">
+
+      <div class="impact-figures">
+        <div class="figure">
+          <span class="num mono" id="daysLost">83.3</span>
+          <span class="cap">يوم كامل فارق تراكمي في وقت التنقل (حرض مقابل يبرين)</span>
+        </div>
+        <div class="figure">
+          <span class="num mono" id="monthsLost">2.8</span>
+          <span class="cap">شهر تقريبًا من عمرك في الطريق الإضافي</span>
+        </div>
+      </div>
+
+      <div class="growth-bars">
+        <div class="growth-row">
+          <span class="g-label">يبرين</span>
+          <div class="growth-track"><div class="growth-fill yabreen" id="yabreenBar" style="width:16.7%"></div></div>
+        </div>
+        <div class="growth-row">
+          <span class="g-label">حرض</span>
+          <div class="growth-track"><div class="growth-fill hard" id="hardBar" style="width:50%"></div></div>
+        </div>
+      </div>
+
+      <p class="footnote">* محسوبة من بيانات فعلية: يبرين ٢.٥ ساعة ذهابًا × رحلة واحدة أسبوعيًا = ٥ ساعات/أسبوع. حرض ١.٥ ساعة ذهابًا × ٥ أيام = ١٥ ساعة/أسبوع، على مدار ٤٠ أسبوع دراسي تقريبًا بالسنة.</p>
+      <p class="footnote">هذا الفارق الزمني يتكرر سنويًا بغض النظر عن موعد نقل الأحساء، لأن الانتقال لحرض لا يُسرّع ذلك الموعد أصلًا.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="verdict-box">
+      <p class="kicker">القرار المبدئي</p>
+      <h2>البقاء في يبرين</h2>
+      <p class="tight">خطر فقدان فرصة حرض للأبد تقدير شخصي غير قابل للتأكيد، ولا علاقة له بتسريع نقل الأحساء، والبدائل الأخرى مكتظة أصلًا بالقدر نفسه.</p>
+      <p>يقابل ذلك عائق حقيقي وحاسم من جهة حرض: صعوبة تحمّل القيادة اليومية صحيًا لسنوات، إضافة إلى تفضيلك الشخصي الواضح للراحة اليومية المضمونة.</p>
+      <p class="next-pointer">↓ التفاصيل الكاملة والمراجعة المستقلة في مجلس الاستشارة أدناه</p>
+    </div>
+  </section>
+</main>
+
+<div class="chapter-divider">
+  <div class="wrap">
+    <p class="kicker">الجزء الثاني</p>
+    <h2>مجلس الاستشارة الذكي</h2>
+    <p>ثماني شخصيات تحليلية تناقش القرار من زوايا مختلفة، بالاستناد إلى كامل المعطيات المتاحة: التكلفة الفعلية، أوقات التنقل الحقيقية، فرصة حرض المستقبلية، والقدرة الصحية على التنقل اليومي.</p>
+    <div class="icons-row">🛡️ 🧠 🚀 ⚖️ 🛠️ 🔍 📋 👑</div>
+  </div>
+</div>
+
+<div class="wrap" id="council">
+
+  <section class="reveal">
+    <p class="phase-title">المرحلة الأولى — المجلس الأساسي</p>
+
+    <div class="council-card">
+      <div class="role-head">
+        <span class="role-num mono">01</span>
+        <span class="role-icon">🛡️</span>
+        <div class="role-titles"><h3>المخالف</h3><span>يبحث عن نقاط الضعف والمخاطر</span></div>
+      </div>
+      <ul>
+        <li>كون خطر فقدان حرض "غير قابل للتأكيد" لا يعني أنه معدوم — الغموض ذاته مخاطرة، وقد يتحول لاحقًا لندم إن أُغلقت الفرصة فعلًا.</li>
+        <li>مشكلة الطاقم "مؤقتة بالدوران" افتراض متفائل أيضًا — لا يوجد جدول زمني معروف لانتقال هؤلاء المعلمين، فقد تمتد لسنوات طويلة كالمخاطرة الأخرى تمامًا.</li>
+        <li>تحمّل القيادة اليومية "صعب" حسب التقييم الذاتي، لكنه لم يُختبر عمليًا لفترة طويلة — قد يتكيف الجسد جزئيًا مع الوقت، كما يحدث مع كثير من المتنقلين يوميًا.</li>
+        <li>الاختيار الحالي مبني على تفضيل شخصي آني (الراحة الآن)، وهذا مشروع تمامًا، لكنه لا يلغي أن القرار عاطفي في جزء منه لا تحليلي بالكامل.</li>
+      </ul>
+    </div>
+
+    <div class="council-card">
+      <div class="role-head">
+        <span class="role-num mono">02</span>
+        <span class="role-icon">🧠</span>
+        <div class="role-titles"><h3>المفكر</h3><span>يعيد بناء المشكلة من جذورها</span></div>
+      </div>
+      <ul>
+        <li>الاكتشاف الجوهري: الانتقال لحرض لا يُسرّع نقل الأحساء بأي شكل — الفترة 10 سنوات ثابتة في الحالتين. إذن لم يعد هناك "مسار أسرع"، بل فقط "بيئة أفضل لقضاء العشر سنوات".</li>
+        <li>بهذا، يسقط الإطار القديم ("فرصة تُفقد للأبد") ويحل محله إطار أدق: "كيف أقضي العقد القادم من حياتي المهنية بأقل ضرر وأعلى راحة؟"</li>
+        <li>مشكلة الطاقم، رغم قسوتها اليومية، محدودة زمنيًا بطبيعتها (تنتهي بدوران الطاقم)، بينما ضرر القيادة اليومية الصحي يتكرر يوميًا بلا سقف زمني واضح لانتهائه.</li>
+        <li>بعمر 35 وأفق مهني 28 سنة، المرونة الزمنية متوفرة؛ لا داعٍ لقرار متسرّع مبني على خوف من فرصة غير مؤكدة.</li>
+      </ul>
+    </div>
+
+    <div class="council-card">
+      <div class="role-head">
+        <span class="role-num mono">03</span>
+        <span class="role-icon">🚀</span>
+        <div class="role-titles"><h3>التوسعي</h3><span>يبحث عن فرص وبدائل جديدة</span></div>
+      </div>
+      <ul>
+        <li>الحفاظ على تقييم ممتاز يرفع الأولوية عند ظهور شواغر مستقبلًا (في حرض أو غيرها) — استراتيجية "الحفاظ على الأهلية" بديلة عن "التحرك الفوري".</li>
+        <li>بما أن كل المدارس القريبة من الأحساء مكتظة بالمثل، يستحق التفكير في تخصصات أو مسارات مهنية إضافية (تدريب، إشراف، دبلوم) قد تفتح قنوات نقل غير تقليدية لاحقًا.</li>
+        <li>يمكن استخدام سنوات الانتظار في يبرين لبناء مهارات أو مصادر دخل إضافية، مستفيدًا من دوامها الأخف بدل اعتبارها سنوات "منتظرة" فقط.</li>
+        <li>متابعة دورية (سنوية) لحالة الشواغر، دون التزام أو قلق مستمر، تحافظ على الوعي بالفرصة دون التضحية بالراحة اليومية.</li>
+      </ul>
+    </div>
+
+    <div class="council-card">
+      <div class="role-head">
+        <span class="role-num mono">04</span>
+        <span class="role-icon">⚖️</span>
+        <div class="role-titles"><h3>الموضوعي</h3><span>يحلل بلا تحيز ولا عاطفة</span></div>
+      </div>
+      <ul>
+        <li>الميزان الرقمي (47 مقابل 29) يميل بوضوح ليبرين، وأهم عوامله عبء التنقل التراكمي (فارق حقيقي وقابل للقياس) والقدرة الجسدية على تحمّله (فارق شخصي حاسم أيضًا).</li>
+        <li>عامل "فرصة حرض المستقبلية" مخاطرة حقيقية، لكنها منخفضة اليقين (تقدير شخصي غير مؤكد)، لذلك وزنها في المعادلة معتدل لا حاسم.</li>
+        <li>لا يوجد أي فارق مالي أو وظيفي (راتب) يرجّح كفة أي خيار — القرار يعتمد بالكامل على جودة الحياة اليومية والقدرة الجسدية على تحمّلها.</li>
+      </ul>
+    </div>
+
+    <div class="council-card">
+      <div class="role-head">
+        <span class="role-num mono">05</span>
+        <span class="role-icon">🛠️</span>
+        <div class="role-titles"><h3>المنفذ</h3><span>يحوّل الفكرة إلى خطوات عملية</span></div>
+      </div>
+      <ol>
+        <li>البقاء في يبرين كقرار مستقر، لا خطوة انتقالية مؤقتة بانتظار حدث معين.</li>
+        <li>الحفاظ على مستوى تقييم ممتاز سنويًا، لتأمين أفضلية عند ظهور أي شاغر مستقبلي دون سعي فوري.</li>
+        <li>وضع آلية شخصية للتعامل مع احتكاك الطاقم اليومي (حدود مهنية واضحة، تقليل التفاعل غير الضروري) لحين تبدّل الطاقم طبيعيًا.</li>
+        <li>مراجعة سنوية خفيفة (مرة كل عام) لحالة الشواغر القريبة من الأحساء، دون أن تتحول لقلق مستمر أو قرار متكرر.</li>
+        <li>الاستفادة من الدوام الأخف في يبرين لتطوير مهارة أو مصدر دخل إضافي خلال سنوات الانتظار.</li>
+      </ol>
+      <div class="obstacle-note"><b>عقبة محتملة:</b> احتكاك الطاقم قد يستمر لفترة غير متوقعة قبل أن يتبدّلوا. الحل: التعامل معه كواقع مؤقت غير مؤكد المدة، لا كمشكلة تتطلب حلًا فوريًا.</div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <p class="phase-title">المرحلة الثانية — المراجعة</p>
+
+    <div class="council-card critic">
+      <div class="role-head">
+        <span class="role-num mono">06</span>
+        <span class="role-icon">🔍</span>
+        <div class="role-titles"><h3>الناقد</h3><span>يراجع النقاش بعين نقدية</span></div>
+      </div>
+      <ul>
+        <li>اعتبار خطر فقدان حرض معلومة يمكن التحقق منها لاحقًا يتجاهل كونها غير قابلة للتأكد أصلًا؛ الأصوب التعامل معها كمخاطرة دائمة منخفضة اليقين، لا كمعلومة ناقصة مؤقتًا.</li>
+        <li>بند القدرة الجسدية على القيادة اليومية يعتمد على تقييم ذاتي واحد دون اختبار عملي فعلي — يستحق أن يُراقَب لا أن يُعامل كحقيقة مطلقة نهائية.</li>
+        <li>لم يُناقَش بعمق: هل الدعم المعنوي الذي حصل عليه من المدير بخصوص مشكلة الطاقم كافٍ فعلًا للاستمرار نفسيًا لسنوات، أم أنه مجرد تسكين مؤقت؟</li>
+        <li>القرار يعتمد جزئيًا على تفضيل شخصي مباشر لا على تحليل بحت فقط — وهذا مشروع، لكن يستحق أن يُذكر صراحة كعامل حاسم بذاته، لا مجرد مدخل ضمن التحليل.</li>
+      </ul>
+    </div>
+
+    <div class="council-card">
+      <div class="role-head">
+        <span class="role-num mono">07</span>
+        <span class="role-icon">📋</span>
+        <div class="role-titles"><h3>المراجع والملخّص</h3><span>يدمج الآراء ويستخلص الجوهر</span></div>
+      </div>
+
+      <div class="axes-grid" style="margin-top:4px;">
+        <div class="axes-col yabreen">
+          <h3><span class="dot yabreen"></span> نقاط الاتفاق</h3>
+          <ul>
+            <li>الانتقال لحرض لا يُسرّع نقل الأحساء، فالإطار الزمني ثابت في الحالتين</li>
+            <li>القدرة الجسدية على التنقل اليومي والتفضيل الشخصي الصريح عاملان حاسمان لصالح يبرين</li>
+          </ul>
+        </div>
+        <div class="axes-col hard">
+          <h3><span class="dot hard"></span> نقاط التحذير</h3>
+          <ul>
+            <li>خطر فقدان حرض غير معدوم رغم عدم تأكده، ويبقى مصدر ندم محتمل</li>
+            <li>مشكلة الطاقم لا جدول زمني معروف لانتهائها فعليًا</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="reco-line"><b>التوصية المشتركة:</b> البقاء في يبرين كقرار مستقر لا انتقالي، مع الحفاظ على تقييم ممتاز كصمام أمان يحفظ فرصة نادرة دون التضحية بالراحة اليومية والصحة.</div>
+    </div>
+  </section>
+
+  <section class="reveal" id="chair-decision" style="padding-top:0;">
+    <div class="final-decision">
+      <p class="kicker">08 · 👑 رئيس المجلس</p>
+      <h2>البقاء في يبرين</h2>
+      <p class="tight">الأرقام (47 مقابل 29) تصب بوضوح لصالح يبرين. الانتقال لحرض لا يُسرّع نقل الأحساء إطلاقًا، وخطر فقدان الفرصة تقدير شخصي غير قابل للتأكيد، بينما القدرة الجسدية على تحمّل القيادة اليومية عائق حقيقي وواضح.</p>
+      <p>يُضاف إلى ذلك تفضيلك الشخصي الصريح للراحة اليومية المضمونة — وهذا عامل مشروع بذاته، لا مجرد ميل عاطفي يستحق تجاهله.</p>
+
+      <div class="confidence-row">
+        <span class="confidence-chip up">مستوى الثقة: مرتفع</span>
+      </div>
+
+      <div class="missing-info">
+        <p class="label">لا توجد معلومات حرجة متبقية تمنع الحسم. نقطتان تستحقان مراقبة لا حسمًا فوريًا:</p>
+        <ol>
+          <li>الجدول الزمني الفعلي لتبدّل الطاقم المسبب للاحتكاك في يبرين (غير معروف، لكنه لا يغيّر التوصية)</li>
+          <li>مدى دقة التقييم الذاتي للقدرة على تحمّل القيادة اليومية — يُفضّل مراقبته إن تغيّرت الظروف مستقبلًا</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>ملخص شخصي لدعم اتخاذ القرار — مُراجَع عبر مجلس استشاري ذكي من ٨ شخصيات</footer>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion) {
+    revealEls.forEach(el => el.classList.add('visible'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  }
+
+  const YABREEN_HOURS_PER_WEEK = 5;
+  const HARD_HOURS_PER_WEEK = 15;
+  const WEEKS_PER_YEAR = 40;
+
+  const slider = document.getElementById('yearsRange');
+  const yearsValue = document.getElementById('yearsValue');
+  const daysLost = document.getElementById('daysLost');
+  const monthsLost = document.getElementById('monthsLost');
+  const hardBar = document.getElementById('hardBar');
+  const yabreenBar = document.getElementById('yabreenBar');
+
+  const hardAnnual = HARD_HOURS_PER_WEEK * WEEKS_PER_YEAR;
+  const yabreenAnnual = YABREEN_HOURS_PER_WEEK * WEEKS_PER_YEAR;
+  const diffAnnual = hardAnnual - yabreenAnnual;
+
+  function updateImpact(n) {
+    const diffHours = diffAnnual * n;
+    const diffDays = diffHours / 24;
+    const diffMonths = diffDays / 30;
+
+    yearsValue.textContent = n;
+    daysLost.textContent = diffDays.toFixed(1);
+    monthsLost.textContent = diffMonths.toFixed(1);
+
+    const hardPct = Math.min(100, (n / 10) * 100);
+    const yabreenPct = hardPct * (yabreenAnnual / hardAnnual);
+    hardBar.style.width = hardPct + '%';
+    yabreenBar.style.width = yabreenPct + '%';
+  }
+
+  slider.addEventListener('input', (e) => updateImpact(Number(e.target.value)));
+  updateImpact(Number(slider.value));
+</script>
+
+</body>
+</html>
